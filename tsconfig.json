@@ -22,7 +22,7 @@
         "jsx": "react",
         "paths": {
             "@routes/*": [
-                "routes/*"
+                "./components/routes/*"
             ]
 
         }

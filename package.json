@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --config ./build/webpack/local.webpack.config.babel.js --env=localdev",
+    "start": "webpack serve --open --config ./build/webpack/local.webpack.config.babel.js --env=localdev"
   },
   "repository": {
     "type": "git",
@@ -18,8 +19,16 @@
   },
   "homepage": "https://github.com/NBeing/VSAV_MatchDB_Web#readme",
   "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.0.0",
+    "@babel/register": "^7.0.0",
     "@typescript-eslint/eslint-plugin": "^5.12.0",
     "@typescript-eslint/parser": "^5.12.0",
+    "autoprefixer": "^10.4.2",
+    "babel-loader": "^8.0.0",
+    "core-js": "^3.0.0",
     "css-loader": "^6.6.0",
     "eslint": "^8.9.0",
     "eslint-import-resolver-typescript": "^2.5.0",
@@ -28,7 +37,10 @@
     "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-webpack-plugin": "^3.1.1",
     "html-webpack-plugin": "^5.5.0",
+    "postcss": "^8.4.6",
     "postcss-loader": "^6.2.1",
+    "postcss-preset-env": "^7.4.1",
+    "sass": "1.32",
     "sass-loader": "^12.6.0",
     "source-map-loader": "^3.0.1",
     "style-loader": "^3.3.1",
@@ -53,5 +65,90 @@
         }
       ]
     ]
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.2",
+    "@types/react": "^17.0.39",
+    "@types/react-bootstrap": "^0.32.29",
+    "@types/react-dom": "^17.0.11",
+    "@types/react-router": "^5.1.18",
+    "@types/react-router-dom": "^5.3.3",
+    "bootstrap": "^5.0.0",
+    "font-awesome": "^4.7.0",
+    "history": "^5.2.0",
+    "react": "^17.0.0",
+    "react-bootstrap": "^2.0.0-beta.5",
+    "react-dom": "^17.0.0",
+    "react-router": "^6.0.0-beta.2",
+    "react-router-dom": "^6.0.0-beta.2"
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "node": true
+    },
+    "globals": {
+      "fetch": true
+    },
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaVersion": 2019,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },
+    "plugins": [
+      "@typescript-eslint",
+      "react",
+      "react-hooks",
+      "import"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:react/recommended",
+      "plugin:react-hooks/recommended"
+    ],
+    "rules": {
+      "@typescript-eslint/no-unused-vars": [
+        "warn"
+      ],
+      "react/prop-types": "warn",
+      "import/no-unresolved": "warn",
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn"
+    },
+    "settings": {
+      "react": {
+        "pragma": "React",
+        "version": "detect"
+      },
+      "import/parsers": {
+        "@typescript-eslint/parser": [
+          ".ts",
+          ".tsx"
+        ]
+      },
+      "import/resolver": {
+        "node": {
+          "extensions": [
+            ".ts",
+            ".tsx"
+          ]
+        },
+        "typescript": {
+          "extensions": [
+            ".ts",
+            ".tsx",
+            ".js",
+            ".jsx"
+          ],
+          "alwaysTryTypes": true
+        }
+      }
+    }
   }
 }
