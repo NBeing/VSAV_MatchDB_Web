@@ -1,5 +1,6 @@
 import React from 'react'
 import AuthService from '@AuthService/auth.service';
+import TokenService from './token.service';
 
 export interface Credentials {
     username: string | null,
@@ -28,6 +29,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const signin = async (credentials:Credentials, callback: VoidFunction) => {
             const token = await AuthService.getToken(credentials)
             setUser({username: credentials.username, token });
+            TokenService.setUser({username: credentials.username, token:token })
             callback();
     }
 
