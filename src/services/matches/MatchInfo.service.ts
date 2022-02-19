@@ -1,5 +1,5 @@
-import api from "../http.common";
-import IMatchData from "./match.type"
+import api from "@Common/http.common";
+import IMatchData from "@MatchService/MatchData.type"
 
 const BASE_URL = `/vsav_info/matches/`
 

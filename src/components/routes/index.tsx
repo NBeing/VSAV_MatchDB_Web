@@ -1,1 +1,0 @@
-export * as Login from './login/Login'; //exports all things exports by index.tsx under /home

@@ -1,5 +1,5 @@
-import { CharNamesEnum } from "common/enums/charNames.enum";
-import { MatchLinkTypeEnum } from "common/enums/matchLinkType.enum";
+import { CharNamesEnum } from "@CommonEnums/charNames.enum";
+import { MatchLinkTypeEnum } from "@CommonEnums/matchLinkType.enum";
 
 export default interface IMatchData {
   id?: any | null,

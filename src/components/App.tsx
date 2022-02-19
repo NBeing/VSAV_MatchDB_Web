@@ -8,7 +8,7 @@ import {
 
 import { AuthStatus } from "./navigation/AuthStatus.component";
 import { RequireAuth } from "./auth/RequireAuth";
-import Login from "@routes/login/Login";
+import Login from "@Pages/login/Login";
 import { ApiTest } from "./ApiTest";
 
 export default function App() {

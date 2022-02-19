@@ -21,10 +21,11 @@
         "noEmit": true,
         "jsx": "react",
         "paths": {
-            "@routes/*": [
-                "./components/routes/*"
-            ]
-
+            "@Pages/*": [ "./components/pages/*"],
+            "@MatchService/*": [ "./services/matches/*"],
+            "@Auth/*":["./services/auth/*"],
+            "@Common/*": ["./common/*"],
+            "@CommonEnums/*": ["./common/enums/*"],
         }
     },
     "include": [

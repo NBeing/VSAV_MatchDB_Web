@@ -1,7 +1,6 @@
-import api from "../http.common";
-
-import TokenService from "./token.service";
-import { Credentials } from "./Auth.helpers";
+import api from "@Common/http.common";
+import TokenService from "@Auth/token.service";
+import { Credentials } from "@Auth/Auth.helpers";
 
 const getToken = (credentials:Credentials) => {
   return api
@@ -19,7 +18,6 @@ const getToken = (credentials:Credentials) => {
 
 const removeToken = (callback:VoidFunction) => {
   TokenService.removeUser();
-  console.log(TokenService.getLocalAccessToken())
   callback()
 };
 

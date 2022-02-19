@@ -1,9 +1,10 @@
 import React from 'react'
-import IMatchData from 'services/matches/match.type'
-import MatchInfoService from '../services/matches/MatchInfo.service' 
 
-import { CharNamesEnum } from "common/enums/charNames.enum";
-import { MatchLinkTypeEnum } from "common/enums/matchLinkType.enum";
+import MatchInfoService from '@MatchService/MatchInfo.service';
+import IMatchData from '@MatchService/MatchData.type';
+
+import { CharNamesEnum } from "@CommonEnums/charNames.enum";
+import { MatchLinkTypeEnum } from "@CommonEnums/matchLinkType.enum";
 
 const dummy_match_data = {
     type: MatchLinkTypeEnum.VI,

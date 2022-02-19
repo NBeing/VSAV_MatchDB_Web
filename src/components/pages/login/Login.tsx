@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "services/auth/Auth.helpers";
+import { useAuth } from "@Auth/Auth.helpers";
 import { Location, To } from "history";
 
 type LocationState = {
