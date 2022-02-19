@@ -1,6 +1,6 @@
 import api from "@Common/http.common";
-import TokenService from "@Auth/token.service";
-import { Credentials } from "@Auth/Auth.helpers";
+import TokenService from "@AuthService/token.service";
+import { Credentials } from "@AuthService/Auth.helpers";
 
 const getToken = (credentials:Credentials) => {
   return api

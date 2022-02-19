@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import TokenService from "@Auth/token.service";
+import TokenService from "@AuthService/token.service";
 
 const instance = axios.create({
   baseURL: "http://localhost:8000/",
@@ -8,6 +8,7 @@ const instance = axios.create({
     "Content-Type": "application/json",
   },
 });
+
 instance.interceptors.request.use(
   (config) => {
     const token = TokenService.getLocalAccessToken();
@@ -20,6 +21,7 @@ instance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
 instance.interceptors.response.use(
   (res) => {
     return res;
@@ -46,4 +48,5 @@ instance.interceptors.response.use(
     return Promise.reject(err);
   }
 );
+
 export default instance;

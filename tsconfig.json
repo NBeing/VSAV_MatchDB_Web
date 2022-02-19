@@ -23,9 +23,10 @@
         "paths": {
             "@Pages/*": [ "./components/pages/*"],
             "@MatchService/*": [ "./services/matches/*"],
-            "@Auth/*":["./services/auth/*"],
+            "@AuthService/*":["./services/auth/*"],
             "@Common/*": ["./common/*"],
             "@CommonEnums/*": ["./common/enums/*"],
+            "@Components/*": ["./components/*"],
         }
     },
     "include": [

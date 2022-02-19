@@ -1,5 +1,5 @@
 import React from 'react'
-import AuthService from './auth.service';
+import AuthService from '@AuthService/auth.service';
 
 export interface Credentials {
     username: string | null,

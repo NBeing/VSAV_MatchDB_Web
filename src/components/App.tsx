@@ -6,8 +6,8 @@ import {
     Outlet
 } from "react-router-dom";
 
-import { AuthStatus } from "./navigation/AuthStatus.component";
-import { RequireAuth } from "./auth/RequireAuth";
+import { AuthStatus } from "@Components/navigation/AuthStatus.component";
+import { RequireAuth } from "@Components/auth/RequireAuth";
 import Login from "@Pages/login/Login";
 import { ApiTest } from "./ApiTest";
 

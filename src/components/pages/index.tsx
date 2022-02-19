@@ -1,1 +1,1 @@
-export * as Login from './login/Login';
+export * as Pages from './';
