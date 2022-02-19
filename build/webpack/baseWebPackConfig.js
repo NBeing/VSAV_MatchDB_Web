@@ -6,7 +6,6 @@ import TerserPlugin from 'terser-webpack-plugin'; //docs -> https://github.com/w
 import sass from 'sass'; //docs -> https://sass-lang.com/install
 import ESLintPlugin from 'eslint-webpack-plugin';
 
-
 //separate so we can call it differently pending on build environment
 function getPlugins(env) {
     const htmlWebPackPlugin = new HtmlWebpackPlugin({
@@ -87,7 +86,8 @@ export function getBaseWebPackConfig(env, argv) {
                                 '@babel/preset-env', //use presets for env, react, and typescript
                                 '@babel/preset-react',
                                 '@babel/preset-typescript'
-                            ]
+                            ],
+                            plugins: []
                         }
                     },
                     {

@@ -1,0 +1,17 @@
+export enum CharNamesEnum {
+  AN = "AN",
+  AU = "AU",
+  BI = "BI",
+  BU = "BU",
+  DE = "DE",
+  FE = "FE",
+  GA = "GA",
+  JE = "JE",
+  LE = "LE",
+  LI = "LI",
+  MO = "MO",
+  SA = "SA",
+  VI = "VI",
+  QB = "QB",
+  ZA = "ZA",
+}

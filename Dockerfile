@@ -1,13 +1,12 @@
 # pull official base image
 FROM node:17.5.0-alpine
-RUN npm install -g yarn
 
 # set working directory
 WORKDIR /app
 
 # add `/app/node_modules/.bin` to $PATH
+RUN rm -rf /app/node_modules
 ENV PATH /app/node_modules/.bin:$PATH
-
 # install app dependencies
 COPY package.json ./
 COPY yarn.lock ./

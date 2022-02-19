@@ -1,14 +1,68 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { HomeRoute } from '@routes/home'; //earlier I talked about the @routes path alias in the TSConfig, this is an example of using it.  It's a short cut so you don't have to folder drill with ../../ etc all over your app.
+import * as React from "react";
+import {
+    Routes,
+    Route,
+    Link,
+    Outlet
+} from "react-router-dom";
 
-export const App = () => {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={(<HomeRoute />)} />
-                <Route path="*" element={<Navigate to="/home" /> } />
-            </Routes>
-        </BrowserRouter>
-    )
+import { AuthStatus } from "./navigation/AuthStatus.component";
+import { RequireAuth } from "./auth/RequireAuth";
+import Login from "@routes/login/Login";
+import { ApiTest } from "./ApiTest";
+
+export default function App() {
+  return (
+      <div>
+      <h1>Auth Example</h1>
+
+      <p>
+        This example demonstrates a simple login flow with three pages: a public
+        page, a protected page, and a login page. In order to see the protected
+        page, you must first login. Pretty standard stuff.
+    </p>
+
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<PublicPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/protected"
+            element={
+              <RequireAuth>
+                <ApiTest />
+              </RequireAuth>
+            }
+          />
+        </Route>
+      </Routes>
+    </div>
+  );
 }
+
+function Layout() {
+  return (
+    <div>
+      <AuthStatus />
+
+      <ul>
+        <li>
+          <Link to="/">Public Page</Link>
+        </li>
+        <li>
+          <Link to="/protected">Protected Page</Link>
+        </li>
+      </ul>
+
+      <Outlet />
+    </div>
+  );
+}
+
+function PublicPage() {
+  return <h3>Public Page, hello to you!</h3>;
+}
+
+
+
+
