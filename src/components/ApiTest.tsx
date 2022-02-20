@@ -1,6 +1,6 @@
 import React from 'react'
 
-import MatchInfoService from '@MatchService/MatchInfo.service';
+import MatchInfoService, {EMPTY_MATCHLIST, MatchListResponse} from '@MatchService/MatchInfo.service';
 import IMatchData from '@MatchService/MatchData.type';
 
 import { CharNamesEnum } from "@CommonEnums/charNames.enum";
@@ -19,7 +19,7 @@ const dummy_match_data = {
 export function ApiTest() {
     const [postData,   setPostData]   = React.useState<IMatchData|null>(null)
     const [updateData, setUpdateData] = React.useState<IMatchData|null>(null)
-    const [listData,   setListData]   = React.useState<Array<IMatchData|null>>([])
+    const [listData,   setListData]   = React.useState<MatchListResponse>(EMPTY_MATCHLIST)
     const [deleteData, setDeleteData] = React.useState<IMatchData|null>(null)
     const [getData,    setGetData]    = React.useState<IMatchData|null>(null)
 
@@ -30,12 +30,12 @@ export function ApiTest() {
     }
     async function doGet(event: React.MouseEvent) {
         event.preventDefault()
-        const matchData = await MatchInfoService.get("cb3431ff-91cc-46f3-a2ba-64d1e1c1967e")
+        const matchData = await MatchInfoService.getById("cb3431ff-91cc-46f3-a2ba-64d1e1c1967e")
         setGetData(matchData)
     }
       async function doList(event: React.MouseEvent) {
         event.preventDefault()
-        const matchData = await MatchInfoService.getAll()
+        const matchData = await MatchInfoService.getPage(1)
         setListData(matchData)
     }
     async function doDelete(event: React.MouseEvent) {

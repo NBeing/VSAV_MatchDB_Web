@@ -6,25 +6,19 @@ import {
     Outlet
 } from "react-router-dom";
 
-import { AuthStatus } from "@Components/navigation/AuthStatus.component";
 import { RequireAuth } from "@Components/auth/RequireAuth";
 import Login from "@Pages/login/Login";
 import { ApiTest } from "./ApiTest";
+import { MatchList } from "@Pages/matchlist/MatchList";
+import { NavBar } from "./navigation/NavBar.component";
 
 export default function App() {
   return (
-      <div>
-      <h1>Auth Example</h1>
-
-      <p>
-        This example demonstrates a simple login flow with three pages: a public
-        page, a protected page, and a login page. In order to see the protected
-        page, you must first login. Pretty standard stuff.
-    </p>
-
+    <div>
+      <NavBar/>
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/" element={<PublicPage />} />
+          <Route path="/" element={<MatchList />} />
           <Route path="/login" element={<Login />} />
           <Route
             path="/protected"
@@ -43,8 +37,6 @@ export default function App() {
 function Layout() {
   return (
     <div>
-      <AuthStatus />
-
       <ul>
         <li>
           <Link to="/">Public Page</Link>
@@ -58,11 +50,6 @@ function Layout() {
     </div>
   );
 }
-
-function PublicPage() {
-  return <h3>Public Page, hello to you!</h3>;
-}
-
 
 
 

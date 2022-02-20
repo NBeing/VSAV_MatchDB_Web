@@ -15,3 +15,21 @@ export enum CharNamesEnum {
   QB = "QB",
   ZA = "ZA",
 }
+
+export const CharNamesEnumDisplay: { [index: string]: string } = {
+  [CharNamesEnum.AN] : "Anakaris",
+  [CharNamesEnum.AU] : "Aulbath",
+  [CharNamesEnum.BI] : "Bishamon",
+  [CharNamesEnum.BU] : "Bulleta",
+  [CharNamesEnum.DE] : "Demitri",
+  [CharNamesEnum.FE] : "Felicia",
+  [CharNamesEnum.GA] : "Gallon",
+  [CharNamesEnum.JE] : "Jedah",
+  [CharNamesEnum.LE] : "Lei-Lei",
+  [CharNamesEnum.LI] : "Lillith",
+  [CharNamesEnum.MO] : "Morrigan",
+  [CharNamesEnum.SA] : "Sasquatch",
+  [CharNamesEnum.VI] : "Victor",
+  [CharNamesEnum.QB] : "Q-Bee",
+  [CharNamesEnum.ZA] : "Zabel",
+};
