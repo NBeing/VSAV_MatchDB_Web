@@ -7,11 +7,11 @@ import {
 } from "react-router-dom";
 
 import { RequireAuth } from "@Components/auth/RequireAuth";
-import Login from "@Pages/login/Login";
-import { ApiTest } from "./ApiTest";
-import { MatchList } from "@Pages/matchlist/MatchList";
+import Login from "@Pages/login/Login.component";
+// import { ApiTest } from "./ApiTest";
 import { NavBar } from "./navigation/NavBar.component";
-
+import { MatchList } from "@Pages/matchlist/MatchList.component";
+import AddMatch from "@Pages/addmatch/AddMatch.component";
 export default function App() {
   return (
     <div>
@@ -24,7 +24,7 @@ export default function App() {
             path="/protected"
             element={
               <RequireAuth>
-                <ApiTest />
+                <AddMatch />
               </RequireAuth>
             }
           />
@@ -39,10 +39,7 @@ function Layout() {
     <div>
       <ul>
         <li>
-          <Link to="/">Public Page</Link>
-        </li>
-        <li>
-          <Link to="/protected">Protected Page</Link>
+          <Link to="/protected">Protected Page (Test Auth)</Link>
         </li>
       </ul>
 
