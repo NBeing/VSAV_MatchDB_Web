@@ -67,14 +67,16 @@
       ]
     ],
     "plugins": [
-        [ "@babel/plugin-transform-runtime",
-          {
-            "absoluteRuntime": false,
-            "corejs": false,
-            "helpers": true,
-            "regenerator": true
-          }
-]    ]
+      [
+        "@babel/plugin-transform-runtime",
+        {
+          "absoluteRuntime": false,
+          "corejs": false,
+          "helpers": true,
+          "regenerator": true
+        }
+      ]
+    ]
   },
   "dependencies": {
     "@babel/runtime": "^7.17.2",
@@ -91,6 +93,7 @@
     "react": "^17.0.0",
     "react-bootstrap": "^2.0.0-beta.5",
     "react-dom": "^17.0.0",
+    "react-hook-form": "^7.27.1",
     "react-router": "^6.2.1",
     "react-router-dom": "^6.2.1"
   },
