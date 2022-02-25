@@ -1,5 +1,5 @@
 import React from "react"
-import { AuthStatus } from "./AuthStatus.component"
+import { AuthStatus } from "@Components/navigation/AuthStatus.component"
 
 export function NavBar(){
     return (

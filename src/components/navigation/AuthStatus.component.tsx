@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from 'services/auth/Auth.helpers';
+import { useAuth } from '@Services/auth/Auth.helpers';
 
 export function AuthStatus() {
   const auth = useAuth();
