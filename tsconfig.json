@@ -21,12 +21,13 @@
         "noEmit": true,
         "jsx": "react",
         "paths": {
-            "@Pages/*": [ "./components/pages/*"],
-            "@MatchService/*": [ "./services/matches/*"],
-            "@AuthService/*":["./services/auth/*"],
-            "@Common/*": ["./common/*"],
-            "@CommonEnums/*": ["./common/enums/*"],
-            "@Components/*": ["./components/*"],
+            "@Pages/*"          : [ "./components/pages/*"],
+            "@MatchService/*"   : [ "./services/matches/*"],
+            "@AuthService/*"    : ["./services/auth/*"],
+            "@Common/*"         : ["./common/*"],
+            "@CommonEnums/*"    : ["./common/enums/*"],
+            "@Components/*"     : ["./components/*"],
+            "@Services/*"       : ["./services/*"] 
         }
     },
     "include": [
