@@ -9,9 +9,10 @@ import {
 import { RequireAuth } from "@Components/auth/RequireAuth";
 import Login from "@Pages/login/Login.component";
 // import { ApiTest } from "./ApiTest";
-import { NavBar } from "./navigation/NavBar.component";
+import { NavBar } from "@Components/navigation/NavBar.component";
 import { MatchList } from "@Pages/matchlist/MatchList.component";
 import AddMatch from "@Pages/addmatch/AddMatch.component";
+
 export default function App() {
   return (
     <div>
