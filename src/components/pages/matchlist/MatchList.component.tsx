@@ -1,19 +1,36 @@
-import React, { useEffect, } from 'react'
+import React, { useEffect, useTheme, } from 'react'
 
-import MatchInfoService, {MatchListResponse} from '@MatchService/MatchInfo.service';
-import { EMPTY_MATCHLIST } from '@MatchService/MatchInfo.service';
+import MatchInfoService, {MatchListResponse} from '@MatchService/MatchInfo.service'
+import { EMPTY_MATCHLIST } from '@MatchService/MatchInfo.service'
 
-import { MatchListItemReadOnly } from '@Pages/matchlist/matchListItem/MatchListItemReadOnly';
-import {createUseStyles} from 'react-jss';
+import { MatchListItemReadOnly } from '@Pages/matchlist/matchListItem/MatchListItemReadOnly'
+import {createUseStyles} from 'react-jss'
+import IMatchData from '@MatchService/MatchData.type'
+import type { CustomTheme } from '@Theme/Theme'
 
-const useStyles = createUseStyles({
-  title: {},
+type RuleNames = 
+  'nextPage'      |
+  'listing'       |
+  'description'   |
+  'title'         |
+  'listingContainer'
+
+const useStyles = createUseStyles<RuleNames, MatchListProps, CustomTheme>({
+  title: ({theme}) => ({
+    background: theme.background || 'black'
+  }),
+  listing:  {},
+  description: {},
   nextPage: {},
-  listing_container: {},
-  description: {}
+  listingContainer: {}
 })
-export function MatchList() {
-    const classes = useStyles()
+
+interface MatchListProps {}
+
+export function MatchList({...props}: MatchListProps) {
+  const theme:CustomTheme = useTheme<CustomTheme>()
+  const classes = useStyles({...props, theme})
+
     const [listData, setListData] = React.useState<MatchListResponse>(EMPTY_MATCHLIST)
     const [page, setPage] = React.useState<number>(1)
     
@@ -43,9 +60,9 @@ export function MatchList() {
 
         <div 
           data-testid="matchList-listing"
-          className={classes.listing_container}
+          className={classes.listingContainer}
         >
-            { listData.results.map((match, id) => <MatchListItemReadOnly match={match} key={id} />)}
+            { listData.results.map((match:IMatchData, key) => <MatchListItemReadOnly match={match} key={key} />)}
         </div>
       </div> 
     )
