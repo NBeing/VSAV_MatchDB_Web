@@ -147,7 +147,8 @@
       "import/no-unresolved": "warn",
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
-      "@typescript-eslint/no-non-null-assertion": "off"
+      "@typescript-eslint/no-non-null-assertion": "off",
+      "@typescript-eslint/no-empty-interface" : "off"
     },
     "settings": {
       "react": {
