@@ -1,9 +1,8 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import {createUseStyles} from 'react-jss'
-
 import { CharNamesEnumDisplay } from '@Common/enums/charNames.enum';
 import { MatchLinkTypeEnumDisplay } from '@Common/enums/matchLinkType.enum';
+import PropTypes from 'prop-types'
+import {createUseStyles} from 'react-jss'
 
 const useStyles = createUseStyles({
   title: {},
