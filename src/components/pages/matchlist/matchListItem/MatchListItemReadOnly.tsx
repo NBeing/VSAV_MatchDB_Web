@@ -1,11 +1,32 @@
 import React from 'react'
 import { CharNamesEnumDisplay } from '@Common/enums/charNames.enum';
 import { MatchLinkTypeEnumDisplay } from '@Common/enums/matchLinkType.enum';
-import PropTypes from 'prop-types'
-import {createUseStyles} from 'react-jss'
+import {createUseStyles, useTheme} from 'react-jss'
+import  type {CustomTheme} from '@Theme/Theme'
+import IMatchData from '@MatchService/MatchData.type'
 
-const useStyles = createUseStyles({
-  title: {},
+type RuleNames = 
+  'title'         |
+  'link'          |
+  'p1_char'       |
+  'p2_char'       |
+  'p1_name'       |
+  'p2_name'       |
+  'winning_char'  |
+  // YT Data 
+  'video_title'   |
+  'timestamp'     |
+  'uploader'      |
+  'date_uploaded'
+
+interface MatchListItemReadOnlyProps {
+  match: IMatchData,
+  key: number
+}
+const useStyles = createUseStyles<RuleNames, MatchListItemReadOnlyProps, CustomTheme>({
+  title: ({theme}) => ({
+    background: theme.background || 'black'
+  }),
   link:  {},
   p1_char: {},
   p2_char: {},
@@ -19,11 +40,15 @@ const useStyles = createUseStyles({
   date_uploaded: {},
 })
 
-export function MatchListItemReadOnly({...props}){
-  const { match, id } = props
-  const classes = useStyles()
+export function MatchListItemReadOnly(
+  {...props} : MatchListItemReadOnlyProps
+){
+  const { match, key } = props
+  const theme:CustomTheme = useTheme<CustomTheme>()
+  const classes = useStyles({...props, theme})
+
   return (
-    <ul key={id}>
+    <ul key={key}>
       <li className={classes.title}>
         Type: {MatchLinkTypeEnumDisplay[match.type]}
       </li>
@@ -59,8 +84,4 @@ export function MatchListItemReadOnly({...props}){
       </li>
     </ul>
   )
-}
-MatchListItemReadOnly.propTypes = {
-  id: PropTypes.string,
-  match: PropTypes.object
 }
