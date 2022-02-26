@@ -1,12 +1,13 @@
-import React, { useEffect, useTheme, } from 'react'
+import React, { useEffect, } from 'react'
+
+import {createUseStyles, useTheme} from 'react-jss'
+import type { CustomTheme } from '@Theme/Theme'
 
 import MatchInfoService, {MatchListResponse} from '@MatchService/MatchInfo.service'
 import { EMPTY_MATCHLIST } from '@MatchService/MatchInfo.service'
 
 import { MatchListItemReadOnly } from '@Pages/matchlist/matchListItem/MatchListItemReadOnly'
-import {createUseStyles} from 'react-jss'
 import IMatchData from '@MatchService/MatchData.type'
-import type { CustomTheme } from '@Theme/Theme'
 
 type RuleNames = 
   'nextPage'      |
