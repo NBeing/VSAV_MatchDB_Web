@@ -25,7 +25,7 @@ export function MatchList() {
           .catch()
     }, [page])
     
-    async function nextPage(event: React.MouseEvent) {
+    function nextPage(event: React.MouseEvent) {
         event.preventDefault()
         setPage(page + 1)
       }
@@ -45,7 +45,7 @@ export function MatchList() {
           data-testid="matchList-listing"
           className={classes.listing_container}
         >
-            { listData?.results.map((match, id) => MatchListItemReadOnly({match, id}))}
+            { listData.results.map((match, id) => <MatchListItemReadOnly match={match} key={id} />)}
         </div>
       </div> 
     )
