@@ -1,6 +1,5 @@
 import api from "@Common/http.common";
 import IMatchData from "@MatchService/MatchData.type"
-import { AxiosError } from "axios";
 
 const BASE_URL = `/vsav_info/matches/`
 
