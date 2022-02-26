@@ -3,8 +3,8 @@ import React, { useEffect, } from 'react'
 import MatchInfoService, {MatchListResponse} from '@MatchService/MatchInfo.service';
 import { EMPTY_MATCHLIST } from '@MatchService/MatchInfo.service';
 
-import { MatchListItemReadOnly } from './matchListItem/__test__/MatchListItemReadOnly';
-import { createUseStyles } from 'react-jss';
+import { MatchListItemReadOnly } from '@Pages/matchlist/matchListItem/MatchListItemReadOnly';
+import {createUseStyles} from 'react-jss';
 
 const useStyles = createUseStyles({
   title: {},
