@@ -27,7 +27,8 @@
             "@Common/*"         : ["./common/*"],
             "@CommonEnums/*"    : ["./common/enums/*"],
             "@Components/*"     : ["./components/*"],
-            "@Services/*"       : ["./services/*"] 
+            "@Services/*"       : ["./services/*"],
+            "@Root/*"           : ["./*"] 
         }
     },
     "include": [
