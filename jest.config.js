@@ -12,6 +12,7 @@ module.exports = {
       "^@Services(.*)$"       : "<rootDir>/services$1",
       "^@CommonEnums(.*)$"    : "<rootDir>/common/enums$1",
       "^@Common(.*)$"         : "<rootDir>/common$1",
-      "^@Root(.*)$"           : "<rootDir>$1"
+      "^@Root(.*)$"           : "<rootDir>$1",
+      "^@Theme(.*)$"          : "<rootDir>/theme$1"
   }
 };
