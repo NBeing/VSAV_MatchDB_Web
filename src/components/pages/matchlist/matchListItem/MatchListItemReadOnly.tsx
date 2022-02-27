@@ -49,37 +49,68 @@ export function MatchListItemReadOnly(
 
   return (
     <ul key={key}>
-      <li className={classes.title}>
+      <li 
+        className={classes.title}
+        data-testid="MatchListItemReadOnly-title"
+      >
         Type: {MatchLinkTypeEnumDisplay[match.type]}
       </li>
-      <li className={classes.link}>
+      <li 
+        className={classes.link}
+        data-testid="MatchListItemReadOnly-link"
+      >
         Link: {match.url}
       </li>
-      <li className={classes.p1_char}>
+      <li
+        className={classes.p1_char}
+        data-testid="MatchListItemReadOnly-p1_char"
+      >
         Player 1: {CharNamesEnumDisplay[match.p1_char]}
       </li>
-      <li className={ classes.p2_char}>
+      <li
+        className={classes.p2_char}
+        data-testid="MatchListItemReadOnly-p2_char"
+      >
         Player 2: {CharNamesEnumDisplay[match.p2_char]}
       </li>
-      <li className={ classes.winning_char}>
+      <li
+        className={ classes.winning_char}
+        data-testid="MatchListItemReadOnly-p2_char"
+      >
         Winning Character: {match.winning_char}
       </li>
-      <li className={ classes.p1_name}>
+      <li
+        className={ classes.p1_name}
+        data-testid="MatchListItemReadOnly-p1_name"
+      >
         Player 1 Name: {match.p1_name}
       </li>
-      <li className={ classes.p2_name}>
+      <li 
+        className={ classes.p2_name}
+        data-testid="MatchListItemReadOnly-p2_name"
+      >
         Player 2 Name: {match.p2_name}
       </li>
-      <li className={ classes.timestamp}>
-        Timestamp: {match.timestamp}
-      </li>
-      <li className={ classes.date_uploaded}>
+      <li 
+        className={ classes.timestamp}
+        data-testid="MatchListItemReadOnly-timestamp"
+      > Timestamp: {match.timestamp}</li>
+      <li
+        className={ classes.date_uploaded}
+        data-testid="MatchListItemReadOnly-date_uploaded"
+      >
         Date Uploaded: {match.date_uploaded}
       </li>
-      <li className={ classes.video_title}>
+      <li
+        className={ classes.video_title}
+        data-testid="MatchListItemReadOnly-video_title"
+      >
         Video Title: {match.video_title}
       </li>
-      <li className={ classes.uploader}>
+      <li
+        className={ classes.uploader}
+        data-testid="MatchListItemReadOnly-uploader"
+      >
         Uploaded By: {match.uploader}
       </li>
     </ul>
