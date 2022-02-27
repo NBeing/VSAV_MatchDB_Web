@@ -75,7 +75,7 @@ export function MatchListItemReadOnly(
       </li>
       <li
         className={ classes.winning_char}
-        data-testid="MatchListItemReadOnly-p2_char"
+        data-testid="MatchListItemReadOnly-winning_char"
       >
         Winning Character: {match.winning_char}
       </li>
