@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@Services/auth/Auth.helpers';
+import { NavigateFunction } from 'react-router'
+import { IAuthContext, useAuth } from '@Services/auth/Auth.helpers';
 
-export function AuthStatus() {
-  const auth = useAuth();
-  const navigate = useNavigate();
+export const AuthStatus:React.FC = ():ReactElement => {
+  const auth:IAuthContext = useAuth();
+  const navigate:NavigateFunction = useNavigate();
 
+  const logout = () => {
+    auth.logout(() => navigate("/"));
+  }
   if (!auth?.user) {
     return <div><p>You are not logged in.</p></div>;
   }
@@ -14,11 +18,9 @@ export function AuthStatus() {
     <p>
       <label>Welcome {auth.user.username}!{" "}</label>
       <button
-        onClick={() => {
-          auth.logout(() => navigate("/"));
-        }}
+        onClick={ logout }
       >
-      <label>Sign Out</label>
+        <label>Sign Out</label>
       </button>
     </p>
   );

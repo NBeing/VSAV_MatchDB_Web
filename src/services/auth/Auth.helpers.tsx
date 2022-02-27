@@ -17,13 +17,13 @@ export type Token = {
     refresh: RefreshToken
     access: AccessToken
 }
-export interface AuthContextType {
+export interface IAuthContext {
     user: UserObject | null;
     signin:  (credentials:Credentials, callback: VoidFunction) => void;
     logout: (callback: VoidFunction) => void;
 }
   
-export const AuthContext = React.createContext<AuthContextType>(null!);
+export const AuthContext = React.createContext<IAuthContext>(null!);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
 
@@ -48,6 +48,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-export function useAuth() {
+export function useAuth():IAuthContext {
     return React.useContext(AuthContext);
 }
