@@ -1,4 +1,4 @@
-interface CustomTheme {
+type CustomTheme = {
     background: string
 }
 
