@@ -25,13 +25,13 @@ const getCurrentUser = ():UserObject => {
   return JSON.parse(localStorage.getItem("user") as string) as UserObject;
 };
 
-interface AuthServiceInterface {
+interface IAuthService {
   getToken: (credentials:Credentials) => Promise<Token>
   removeToken: (callback:VoidFunction) => void
   getCurrentUser: () => UserObject
 }
 
-const AuthService:AuthServiceInterface = {
+const AuthService:IAuthService = {
   getToken,
   removeToken,
   getCurrentUser,

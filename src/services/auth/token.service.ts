@@ -28,7 +28,7 @@ const removeUser = ():void => {
     localStorage.removeItem("user");
 };
 
-interface TokenServiceInterface {
+interface ITokenService {
     getLocalRefreshToken(): RefreshToken
     getLocalAccessToken(): AccessToken
     updateLocalAccessToken(token:AccessToken):void
@@ -36,7 +36,7 @@ interface TokenServiceInterface {
     setUser(user:UserObject): void
     removeUser():void   
 }
-const TokenService:TokenServiceInterface = {
+const TokenService:ITokenService = {
     getLocalRefreshToken,
     getLocalAccessToken,
     updateLocalAccessToken,
