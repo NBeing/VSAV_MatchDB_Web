@@ -3,23 +3,33 @@ import IMatchData from "@MatchService/MatchData.type"
 
 const BASE_URL = `/vsav_info/matches/`
 
-export interface MatchListResponse {
-  count: number,
-  next: string,
-  previous: null,
+export type MatchListResponse = {
+  count: number
+  next: string
+  previous: null
   results: IMatchData[]
 }
-export interface GetAllProps {
+
+export type GetAllProps = {
   page? : number,
 }
-export const EMPTY_MATCHLIST = {
+
+export const EMPTY_MATCHLIST:MatchListResponse = {
   count: 0,
   next: '',
   previous: null,
   results: []
 }
 
-class MatchInfoService {
+interface IMatchInfoService {
+  getPage : (page_num: number) => Promise<MatchListResponse>
+  getById : (id:string) => Promise<IMatchData>
+  create  : (match: IMatchData) => Promise<IMatchData>
+  update  : (match: IMatchData, id: string) => Promise<IMatchData>
+  delete  : (id:string) => Promise<IMatchData>
+}
+
+class MatchInfoService implements IMatchInfoService {
 
   async getPage(page_num: number): Promise<MatchListResponse> {
     try {
