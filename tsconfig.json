@@ -29,8 +29,8 @@
             "@Components/*"     : ["./components/*"],
             "@Services/*"       : ["./services/*"],
             "@Root/*"           : ["./*"],
-            "@Theme/*"           : ["./theme/*"],
-            "@Routes/*"           : ["./routes/*"]
+            "@Theme/*"          : ["./theme/*"],
+            "@Routes/*"         : ["./routes/*"]
 
         }
     },
