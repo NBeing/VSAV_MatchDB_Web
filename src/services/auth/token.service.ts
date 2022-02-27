@@ -1,34 +1,42 @@
-import { UserObject} from './Auth.helpers'
+import { AccessToken, RefreshToken, UserObject } from './Auth.helpers'
 
-const getLocalRefreshToken = () => {
+const getLocalRefreshToken = ():RefreshToken => {
     const user:UserObject = JSON.parse(localStorage.getItem("user") as string);
     return user?.token?.refresh;
 };
   
-const getLocalAccessToken = () => {
+const getLocalAccessToken = ():AccessToken => {
     const user:UserObject = JSON.parse(localStorage.getItem("user") as string);
     return user?.token?.access;
 };
 
-const updateLocalAccessToken = (token:string) => {
+const updateLocalAccessToken = (token:AccessToken):void => {
     const user:UserObject = JSON.parse(localStorage.getItem("user") as string);
     user.token.access = token;
     localStorage.setItem("user", JSON.stringify(user));
 };
 
-const getUser = () => {
+const getUser = ():UserObject => {
     return JSON.parse(localStorage.getItem("user") as string);
 };
 
-const setUser = (user:UserObject) => {
+const setUser = (user:UserObject):void => {
     localStorage.setItem("user", JSON.stringify(user));
 };
 
-const removeUser = () => {
+const removeUser = ():void => {
     localStorage.removeItem("user");
 };
 
-const TokenService = {
+interface TokenServiceInterface {
+    getLocalRefreshToken(): RefreshToken
+    getLocalAccessToken(): AccessToken
+    updateLocalAccessToken(token:AccessToken):void
+    getUser(): UserObject
+    setUser(user:UserObject): void
+    removeUser():void   
+}
+const TokenService:TokenServiceInterface = {
     getLocalRefreshToken,
     getLocalAccessToken,
     updateLocalAccessToken,

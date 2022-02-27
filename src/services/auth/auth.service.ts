@@ -1,8 +1,8 @@
 import api from "@Common/http.common";
 import TokenService from "@AuthService/token.service";
-import { Credentials } from "@AuthService/Auth.helpers";
+import { Credentials, Token, UserObject } from "@AuthService/Auth.helpers";
 
-const getToken = (credentials:Credentials) => {
+const getToken = (credentials:Credentials): Promise<Token> => {
   return api
     .post("/api/token/", {
       email: credentials.username,
@@ -16,17 +16,22 @@ const getToken = (credentials:Credentials) => {
     });
 };
 
-const removeToken = (callback:VoidFunction) => {
+const removeToken = (callback:VoidFunction): void => {
   TokenService.removeUser();
   callback()
 };
 
-const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem("user") as string);
+const getCurrentUser = ():UserObject => {
+  return JSON.parse(localStorage.getItem("user") as string) as UserObject;
 };
 
+interface AuthServiceInterface {
+  getToken: (credentials:Credentials) => Promise<Token>
+  removeToken: (callback:VoidFunction) => void
+  getCurrentUser: () => UserObject
+}
 
-const AuthService = {
+const AuthService:AuthServiceInterface = {
   getToken,
   removeToken,
   getCurrentUser,

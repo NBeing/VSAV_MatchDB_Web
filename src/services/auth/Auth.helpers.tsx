@@ -2,17 +2,20 @@ import React from 'react'
 import AuthService from '@AuthService/auth.service';
 import TokenService from './token.service';
 
-export interface Credentials {
-    username: string | null,
+export type Credentials = {
+    username: string | null
     password: string | null
 }
-export interface UserObject {
-    username: string | null,
+export type UserObject = {
+    username: string | null
     token: Token
 }
-export interface Token {
-    refresh: string | null,
-    access: string | null
+export type RefreshToken = string | null
+export type AccessToken = string | null
+
+export type Token = {
+    refresh: RefreshToken
+    access: AccessToken
 }
 export interface AuthContextType {
     user: UserObject | null;
