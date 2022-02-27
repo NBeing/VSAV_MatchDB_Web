@@ -4,7 +4,6 @@ import { MatchLinkTypeEnum } from '@Common/enums/matchLinkType.enum'
 import IMatchData from '@MatchService/MatchData.type'
 import {render, cleanup, screen} from '@Root/test.utils'
 import { MatchListItemReadOnly } from '../MatchListItemReadOnly'
-import { act } from 'react-dom/test-utils'
 
 afterEach(cleanup)
 beforeEach(() => {})
