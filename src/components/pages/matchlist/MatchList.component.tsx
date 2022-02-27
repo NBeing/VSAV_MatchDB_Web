@@ -59,12 +59,15 @@ export function MatchList({...props}: MatchListProps) {
           onClick={nextPage}
         >Next Page</button>
 
-        <div 
+        {listData.results.length && <div 
           data-testid="matchList-listing"
           className={classes.listingContainer}
         >
-            { listData.results.map((match:IMatchData, key) => <MatchListItemReadOnly match={match} key={key} />)}
+            { listData.results.map((match:IMatchData, key) => 
+              <MatchListItemReadOnly match={match} key={key} />)
+            }
         </div>
+      }
       </div> 
     )
   }
