@@ -3,25 +3,57 @@ import { useNavigate } from 'react-router-dom';
 import { NavigateFunction } from 'react-router'
 import { IAuthContext, useAuth } from '@Services/auth/Auth.helpers';
 
-export const AuthStatus:React.FC = ():ReactElement => {
+import {createUseStyles, useTheme} from 'react-jss'
+import type { CustomTheme } from '@Theme/Theme'
+
+
+type RuleNames = 
+  'wrapper'       |
+  'logoutButton'  |
+  'welcome'       | 
+  'notLoggedIn'
+
+interface AuthStatusProps {}
+
+const useStyles = createUseStyles<RuleNames, AuthStatusProps, CustomTheme>({
+  wrapper: ({theme}) => ({
+    background: theme.background || 'black'
+  }),
+  logoutButton:  {},
+  welcome:  {},
+  notLoggedIn: {}
+})
+
+export const AuthStatus:React.FC = ({...props}: AuthStatusProps):ReactElement => {
   const auth:IAuthContext = useAuth();
   const navigate:NavigateFunction = useNavigate();
+
+  const theme:CustomTheme = useTheme<CustomTheme>()
+  const classes = useStyles({...props, theme})
 
   const logout = () => {
     auth.logout(() => navigate("/"));
   }
   if (!auth?.user) {
-    return <div><p>You are not logged in.</p></div>;
+    return <div className={classes.notLoggedIn}>
+      <p>You are not logged in.</p>
+    </div>;
   }
 
   return (
-    <p>
-      <label>Welcome {auth.user.username}!{" "}</label>
+    <div
+      data-testid=""
+      className={classes.wrapper}
+    >
+      <span className={classes.welcome}>
+        Welcome {auth.user.username}!{" "}
+      </span>
       <button
+        className={classes.logoutButton}
         onClick={ logout }
       >
-        <label>Sign Out</label>
+        <label>Log Out</label>
       </button>
-    </p>
+    </div>
   );
 }

@@ -28,7 +28,7 @@ const useStyles = createUseStyles<RuleNames, MatchListProps, CustomTheme>({
 
 interface MatchListProps {}
 
-export function MatchList({...props}: MatchListProps) {
+export const MatchList:React.FC = ({...props}: MatchListProps) => {
   const theme:CustomTheme = useTheme<CustomTheme>()
   const classes = useStyles({...props, theme})
 
