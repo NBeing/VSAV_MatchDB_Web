@@ -13,6 +13,8 @@ module.exports = {
       "^@CommonEnums(.*)$"    : "<rootDir>/common/enums$1",
       "^@Common(.*)$"         : "<rootDir>/common$1",
       "^@Root(.*)$"           : "<rootDir>$1",
-      "^@Theme(.*)$"          : "<rootDir>/theme$1"
+      "^@Theme(.*)$"          : "<rootDir>/theme$1",
+      "^@Routes(.*)$"          : "<rootDir>/routes$1"
+
   }
 };

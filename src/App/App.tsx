@@ -1,52 +1,16 @@
 import * as React from "react";
-import {
-    Routes,
-    Route,
-    Link,
-    Outlet
-} from "react-router-dom";
-
-import { RequireAuth } from "@Components/auth/RequireAuth";
-import Login from "@Pages/login/Login.component";
+import { Outlet} from "react-router-dom";
 import { NavBar } from "@Components/navigation/NavBar.component";
-import { MatchList } from "@Pages/matchlist/MatchList.component";
-import AddMatch from "@Pages/addmatch/AddMatch.component";
 
-export default function App() {
+const App:React.FC = ():React.ReactElement => {
   return (
     <div data-testid="app-wrapper">
+      <h1>VSAV MATCH DBEE</h1>
       <NavBar/>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<MatchList />} />
-          <Route path="/login" element={<Login />} />
-          <Route
-            path="/protected"
-            element={
-              <RequireAuth>
-                <AddMatch />
-              </RequireAuth>
-            }
-          />
-        </Route>
-      </Routes>
-    </div>
-  );
-}
-
-function Layout() {
-  return (
-    <div>
-      <ul>
-        <li>
-          <Link to="/protected">Protected Page (Test Auth)</Link>
-        </li>
-      </ul>
-
       <Outlet />
     </div>
   );
 }
 
 
-
+export default App

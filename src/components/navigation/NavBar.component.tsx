@@ -1,10 +1,13 @@
-import React from "react"
+import React, {ReactElement} from "react"
 import { AuthStatus } from "@Components/navigation/AuthStatus.component"
+import { Link } from "react-router-dom"
 
-export function NavBar(){
+export const NavBar:React.FC = ():ReactElement => {
     return (
         <div>
-            <h1>VSAV MATCH DBEE</h1>
+            <Link to="/login">Login</Link>
+            <Link to="/protected">Protected (Edit)</Link>
+            <Link to="/listing">Match List</Link>
             <AuthStatus />
         </div>
     )

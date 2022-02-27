@@ -29,7 +29,9 @@
             "@Components/*"     : ["./components/*"],
             "@Services/*"       : ["./services/*"],
             "@Root/*"           : ["./*"],
-            "@Theme/*"           : ["./theme/*"]
+            "@Theme/*"           : ["./theme/*"],
+            "@Routes/*"           : ["./routes/*"]
+
         }
     },
     "include": [
