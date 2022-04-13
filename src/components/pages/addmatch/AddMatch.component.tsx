@@ -5,6 +5,39 @@ import { useForm } from "react-hook-form";
 import { CharNamesEnum, CharNamesEnumDisplay } from "@Common/enums/charNames.enum";
 import { MatchLinkTypeEnum, MatchLinkTypeEnumDisplay } from "@Common/enums/matchLinkType.enum";
 
+import {createUseStyles, useTheme} from 'react-jss'
+import type { CustomTheme } from '@Theme/Theme'
+
+type RuleNames = 
+  'title'           |
+  'textInput'       |
+  'description'     |
+  'container'       |
+  'form'
+
+interface AddMatchProps {}
+
+const useStyles = createUseStyles<RuleNames, AddMatchProps, CustomTheme>({
+  title: ({theme}) => ({
+    background: theme.background || 'black'
+  }),
+  textInput:  {
+    color: "white",
+    // alignSelf: "flex-start",
+    // '& input':{
+    //   alignSelf: "stretch",
+    // } 
+  },
+  description: {},
+  container: ({theme}) => ({
+    backgroundColor: 'black' || theme.background,
+  }),
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    padding: "10px",
+  }
+ })
 
 interface IFormInput {
     type: MatchLinkTypeEnum,
@@ -24,17 +57,21 @@ interface IFormInput {
 }
 
 
-export default function AddMatch() {
+export const AddMatch:React.FC = ({...props}: AddMatchProps) => {
+  const theme:CustomTheme = useTheme<CustomTheme>()
+  const classes = useStyles({...props, theme})
+
   const { register, handleSubmit, watch, formState: { errors } } = useForm<IFormInput>();
   const onSubmit = (data:IFormInput) => {
     //   MatchInfoService.create(data)
-    return console.log(data)
+    return console.log("Submitted!", data)
   }
 
   console.log(watch("char_1")); // watch input value by passing the name of it
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <div className={classes.container}>
+    <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
       
       
       <select {...register("type", {required:true})} >
@@ -42,10 +79,12 @@ export default function AddMatch() {
         <option value={MatchLinkTypeEnum.VI}>{MatchLinkTypeEnumDisplay.VI}</option>
         <option value={MatchLinkTypeEnum.FC2}>{MatchLinkTypeEnumDisplay.FC2} </option>
       </select>
-      <label> URL
+      <label className={classes.textInput}> URL
          <input {...register("url", { required: true })} />
       </label>
-      <input {...register("timestamp", { required: false })} />
+      <label className={classes.textInput}> Timestamp
+        <input {...register("timestamp", { required: false })} />
+      </label>
 
       <select {...register("char_1", {required:true})} >
         <option value=''>Choose P2 Character</option>
@@ -102,9 +141,15 @@ export default function AddMatch() {
         <option value={CharNamesEnum.QB}>{CharNamesEnumDisplay.QB}</option>
         <option value={CharNamesEnum.ZA}>{CharNamesEnumDisplay.ZA}</option>
       </select>
-      <input {...register("video_title", { required: false })} />
-      <input {...register("uploader", { required: false })} />
-      <input {...register("date_uploaded", { required: false })} />
+      <label className={classes.textInput}> Video Title
+        <input {...register("video_title", { required: false })} />
+      </label>
+      <label className={classes.textInput}>Uploader
+        <input {...register("uploader", { required: false })} />
+      </label>
+      <label className={classes.textInput}> Date Uploaded
+        <input {...register("date_uploaded", { required: false })} />
+      </label>
 
       {/* errors will return when field validation fails  */}
       {errors.char_1 && <span>This field is required</span>}
@@ -113,5 +158,6 @@ export default function AddMatch() {
 
       <input type="submit" />
     </form>
+    </div>
   );
 }
