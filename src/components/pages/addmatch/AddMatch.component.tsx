@@ -50,10 +50,10 @@ type CharNamesOptions = CharNamesEnum | NoneOption
 const CharNamesOptions = { ...NoneOption, ...CharNamesEnum }
 
 const CharNamesDisplayOptions = { ...NoneOptionDisplay, ...CharNamesEnumDisplay, }
-type AllowedFormValue = MatchLinkTypeEnum | number | string | null
+type AllowedFormValue = string | number | readonly string[] | undefined
 type FormItemState = {
   value: AllowedFormValue,
-  dirty: false,
+  dirty: boolean,
   valid: boolean,
   validators: ((allowedFormValue: AllowedFormValue) => boolean)[],
   required: boolean,
@@ -144,11 +144,14 @@ export const AddMatch: React.FC = ({ ...props }: AddMatchProps) => {
     }
   })
   const allCharOptions = Object.keys(CharNamesOptions)
-    .map(key => (
+    .map(key => {
+      // const index = Object.keys(CharNamesOptions).indexOf(key)
+      console.log("index", CharNamesDisplayOptions, CharNamesOptions)
+      return(
       <option key={key} value={key}>
         {CharNamesDisplayOptions[key]}
       </option>
-    ))
+    )})
   const winningCharOptions = useMemo(() => {
     return allCharOptions.filter(x => {
       if (x.key == formState.p1_char.value || x.key == formState.p2_char.value) {
@@ -164,7 +167,7 @@ export const AddMatch: React.FC = ({ ...props }: AddMatchProps) => {
     if (formState[inputName].validators.length) {
       // console.log("Has validator")
     }
-    setFormState((prevState) => {
+    setFormState((prevState:FormState) => {
       // console.log("Setting form state", prevState)
       const newState = {
         ...prevState,
@@ -208,7 +211,7 @@ export const AddMatch: React.FC = ({ ...props }: AddMatchProps) => {
     // }
     // checkRequired()
     // checkValid()
-    const data = Object.keys(formState).reduce((acc, key) => {
+    const data = Object.keys(formState).reduce<IMatchData>((acc, key) => {
       console.log(acc, key)
       acc[key] = formState[key].value
       return acc
@@ -236,7 +239,7 @@ export const AddMatch: React.FC = ({ ...props }: AddMatchProps) => {
 
   return (
     <div className={classes.container}>
-      <pre style={{backgroundColor: "white"}}>{ JSON.stringify(formState,null,2)}</pre>
+      {/* <pre style={{backgroundColor: "white"}}>{ JSON.stringify(formState,null,2)}</pre> */}
       <form className={classes.form} onSubmit={onSubmit}>
 
         <select
