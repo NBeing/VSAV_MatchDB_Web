@@ -1,3 +1,4 @@
+import React, { ReactNode } from "react";
 import { MatchLinkTypeEnum } from "@Common/enums/matchLinkType.enum";
 import { CharNamesEnum, CharNamesEnumDisplay } from "@Common/enums/charNames.enum";
 
@@ -19,11 +20,27 @@ export type FormItemState = {
     validators: ((allowedFormValue: AllowedFormValue) => boolean)[],
     required: boolean,
     validationErrors: string[]
+    options?: ReactNode[]
 }
 import YoutubeUtil from "@Common/util/youtube.util"
 export interface FormState {
     [key: string]: FormItemState
 }
+// Validators
+const isInt = (num:unknown) => Number.isInteger(parseInt(num as string))
+const isGtEqZero = (num:unknown) => (parseInt(num as string)) >= 0 
+const isString = ( str : unknown) => typeof str == 'string'
+const isNotNoneOption = ( option:CharNamesOptions) => option !== CharNamesOptions.NA  
+
+export const allCharOptions = Object.keys(CharNamesOptions)
+.map(key => {
+  return (
+    <option key={key} value={key}>
+      {CharNamesDisplayOptions[key]}
+    </option>
+  )
+})
+
 export const INITIAL_FORM_STATE: FormState = {
     type: {
         name: "type",
@@ -54,7 +71,7 @@ export const INITIAL_FORM_STATE: FormState = {
         value: -1,
         dirty: false,
         valid: false,
-        validators: [],
+        validators: [isInt , isGtEqZero],
         required: true,
         validationErrors: []
     },
@@ -65,9 +82,10 @@ export const INITIAL_FORM_STATE: FormState = {
         value: CharNamesOptions.NA,
         dirty: false,
         valid: false,
-        validators: [],
+        validators: [isNotNoneOption],
         required: true,
-        validationErrors: []
+        validationErrors: [],
+        options: allCharOptions
     },
     p2_char: {
         name: "p2_char",
@@ -76,9 +94,10 @@ export const INITIAL_FORM_STATE: FormState = {
         value: CharNamesOptions.NA,
         dirty: false,
         valid: false,
-        validators: [],
+        validators: [isNotNoneOption],
         required: true,
-        validationErrors: []
+        validationErrors: [],
+        options: allCharOptions
     },
     winning_char: {
         name: "winning_char",
@@ -87,9 +106,10 @@ export const INITIAL_FORM_STATE: FormState = {
         value: CharNamesOptions.NA,
         dirty: false,
         valid: false,
-        validators: [],
+        validators: [isNotNoneOption],
         required: true,
-        validationErrors: []
+        validationErrors: [],
+        options: allCharOptions
     },
     p1_name: {
         name: "p1_name",
@@ -98,7 +118,7 @@ export const INITIAL_FORM_STATE: FormState = {
         value: '',
         dirty: false,
         valid: false,
-        validators: [],
+        validators: [isString],
         required: false,
         validationErrors: []
     },
@@ -109,7 +129,7 @@ export const INITIAL_FORM_STATE: FormState = {
         value: '',
         dirty: false,
         valid: false,
-        validators: [],
+        validators: [isString],
         required: false,
         validationErrors: []
     },
@@ -120,7 +140,7 @@ export const INITIAL_FORM_STATE: FormState = {
         value: '',
         dirty: false,
         valid: false,
-        validators: [],
+        validators: [isString],
         required: false,
         validationErrors: []
     },
@@ -131,7 +151,7 @@ export const INITIAL_FORM_STATE: FormState = {
         value: '',
         dirty: false,
         valid: false,
-        validators: [],
+        validators: [isString],
         required: false,
         validationErrors: []
     },
@@ -142,7 +162,7 @@ export const INITIAL_FORM_STATE: FormState = {
         value: '',
         dirty: false,
         valid: false,
-        validators: [],
+        validators: [isString],
         required: false,
         validationErrors: []
     }
