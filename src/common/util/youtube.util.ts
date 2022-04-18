@@ -8,8 +8,10 @@ const getYoutubeID = (url:string):string | null => url ? url.match(re)![7] : nul
 
 // https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
 function getParameterByName(name:string, url:string) {
+    // ( don't want to mess around with this regex so im disabling linter)
+    // eslint-disable-next-line no-useless-escape
     name = name.replace(/[\[\]]/g, '\\$&');
-    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+    const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
         results = regex.exec(url);
     if (!results) return null;
     if (!results[2]) return '';

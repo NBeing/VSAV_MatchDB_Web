@@ -21,15 +21,32 @@ export const EMPTY_MATCHLIST:MatchListResponse = {
   results: []
 }
 
+interface IVideoDetail {
+  uploader: string,
+  date_uploaded: string,
+  video_title: string
+}
 interface IMatchInfoService {
-  getPage : (page_num: number) => Promise<MatchListResponse>
-  getById : (id:string) => Promise<IMatchData>
-  create  : (match: IMatchData) => Promise<IMatchData>
-  update  : (match: IMatchData, id: string) => Promise<IMatchData>
-  delete  : (id:string) => Promise<IMatchData>
+  getPage   : (page_num: number) => Promise<MatchListResponse>
+  getById   : (id:string) => Promise<IMatchData>
+  create    : (match: IMatchData) => Promise<IMatchData>
+  update    : (match: IMatchData, id: string) => Promise<IMatchData>
+  delete    : (id:string) => Promise<IMatchData>
+  ytDetails : (url:string) => Promise<IVideoDetail>
 }
 
 class MatchInfoService implements IMatchInfoService {
+  
+  async ytDetails(url:string): Promise<IVideoDetail> {
+    console.log(`Looking for: ${url}`)
+    try {
+      const endpoint = BASE_URL + `get-yt-info/?url=${url}`
+      const { data } = await api.post<IVideoDetail>(endpoint, {url})
+      return data 
+    } catch (e) {
+      throw new Error(JSON.stringify(e))
+    }
+  }
 
   async getPage(page_num: number): Promise<MatchListResponse> {
     try {
