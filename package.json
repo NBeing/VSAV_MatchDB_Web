@@ -85,6 +85,9 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.17.2",
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
+    "@mui/material": "^5.6.2",
     "@popperjs/core": "^2.11.2",
     "@types/enzyme": "^3.10.11",
     "@types/jest": "^27.4.1",
