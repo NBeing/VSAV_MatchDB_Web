@@ -10,9 +10,12 @@ type RuleNames = 'wrapper'
 
 
 const useStyles = createUseStyles<RuleNames, AppProps, CustomTheme>({
-  wrapper: ({theme}) => ({
-    background: theme.background || 'black'
-  })
+  // wrapper: ({theme}) => ({
+  //   background: theme.background || 'black'
+  // })
+  wrapper: ({
+      // background: 'black'
+    })
 })
 
 interface AppProps {}

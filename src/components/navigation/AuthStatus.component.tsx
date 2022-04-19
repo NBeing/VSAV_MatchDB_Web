@@ -16,8 +16,12 @@ type RuleNames =
 interface AuthStatusProps {}
 
 const useStyles = createUseStyles<RuleNames, AuthStatusProps, CustomTheme>({
-  wrapper: ({theme}) => ({
-    background: theme.background || 'black'
+  // wrapper: ({theme}) => ({
+  //   background: theme.background || 'black',
+  //   color: theme.text2
+  // }),
+  wrapper: ({
+    // background: 'black'
   }),
   logoutButton:  {},
   welcome:  {},
@@ -36,7 +40,7 @@ export const AuthStatus:React.FC = ({...props}: AuthStatusProps):ReactElement =>
   }
   if (!auth?.user) {
     return <div className={classes.notLoggedIn}>
-      <p>You are not logged in.</p>
+      <span>You are not logged in.</span>
     </div>;
   }
 

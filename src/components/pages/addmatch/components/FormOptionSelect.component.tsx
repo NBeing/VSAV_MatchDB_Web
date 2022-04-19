@@ -3,6 +3,7 @@ import { Classes } from "jss"
 import React, { ChangeEvent, ReactNode } from "react"
 import { createUseStyles, useTheme } from "react-jss"
 import { FormItemState } from "../AddMatch.helpers"
+import { NativeSelect } from '@mui/material'
 
 export type FormOptionSelectRuleNames =
     'label' |
@@ -13,48 +14,44 @@ export type FormOptionSelectRuleNames =
     'container'
 
 interface FormOptionSelectProps {
-    onChange: (event: ChangeEvent<HTMLSelectElement>) => void,
+    onChange: (event:(ChangeEvent<HTMLSelectElement>)) => void,
     formItemState: FormItemState,
     options: ReactNode[]
 }
 
 export const useStyles = createUseStyles<FormOptionSelectRuleNames, FormOptionSelectProps, CustomTheme>({
-    label: ({ theme }) => ({
-        color: 'white' || theme.background
-    }),
+    label: ({
+        // background: 'black'
+      }),
     select: {
-        color: "white",
-        border: "none",
-        backgroundColor: "rgba(0,0,0,0)"
+        // minWidth: "250px",
+        // color: "white",
+        // border: "none",
     },
     container_dirty: {
-        color: "white",
-        borderColor: "yellow",
-        border: "2px solid",
-        backgroundColor: "rgba(0,0,0,0)"
+        // color: "white",
+        // borderColor: "yellow",
+        // border: "2px solid",
     },
     container_invalid: {
-        color: "white",
-        borderColor: "red",
-        border: "2px solid",
-        backgroundColor: "rgba(0,0,0,0)"
+        // color: "white",
+        // borderColor: "red",
+        // border: "2px solid",
     },
     container_valid: {
-        color: "white",
-        borderColor: "green",
-        border: "2px solid",
-        backgroundColor: "rgba(0,0,0,0)"
-
+        // color: "white",
+        // borderColor: "green",
+        // border: "2px solid",
     },
 
-    container: ({ theme }) => ({
-        backgroundColor: 'black' || theme.background,
+    container: ({
+        // background: 'black'
     }),
 })
 
 const getFormItemValidationStateClass = (formItemState:FormItemState, classes:Classes<FormOptionSelectRuleNames>) => {
 
-    if ( !formItemState.dirty){
+    if ( !formItemState.dirty ){
         return classes.container
     } else if ( formItemState.valid && formItemState.dirty ){
         return classes.container_valid
@@ -65,7 +62,7 @@ const getFormItemValidationStateClass = (formItemState:FormItemState, classes:Cl
 export const FormOptionSelect: React.FC<FormOptionSelectProps> = ({ ...props }: FormOptionSelectProps) => {
     const theme: CustomTheme = useTheme<CustomTheme>()
     const classes = useStyles({ ...props, theme })
-    const handleChange = (e: ChangeEvent<HTMLSelectElement>) => { props.onChange(e) }
+    const handleChange = (e: (ChangeEvent<HTMLSelectElement>)) => { props.onChange(e) }
     const formItemState = props.formItemState
     const validityState = getFormItemValidationStateClass(formItemState, classes)
     const options = props.options
@@ -75,14 +72,13 @@ export const FormOptionSelect: React.FC<FormOptionSelectProps> = ({ ...props }: 
             <label className={classes.label}>
                 {formItemState.label}
             </label>
-            <select
-                className={classes.select}
+            <NativeSelect
                 name={formItemState.name}
                 value={props.formItemState.value}
                 onChange={e => handleChange(e)}
             >
-                {options}
-            </select>
+                {options}                
+            </NativeSelect>
             <div style={{color: "white"}}> Is valid? : { (formItemState.valid) ? "Yes!": "No!" } </div>
             {(formItemState.validationErrors.length > 0) &&
                 formItemState.validationErrors.map((err, i) => (

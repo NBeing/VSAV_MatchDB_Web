@@ -24,8 +24,8 @@ interface MatchListItemReadOnlyProps {
   key: number
 }
 const useStyles = createUseStyles<RuleNames, MatchListItemReadOnlyProps, CustomTheme>({
-  title: ({theme}) => ({
-    background: theme.background || 'black'
+  title: ({
+    // background: 'black'
   }),
   link:  {},
   p1_char: {},

@@ -12,8 +12,8 @@ type RuleNames =
   'link'
 
 const useStyles = createUseStyles<RuleNames, NavBarProps, CustomTheme>({
-  wrapper: ({theme}) => ({
-    background: theme.background || 'black'
+  wrapper: ({
+    // background: 'black'
   }),
   link:  {},
 })
@@ -36,7 +36,7 @@ export const NavBar:React.FC = ({...props}: NavBarProps):ReactElement => {
     const classes = useStyles({...props, theme})
 
     return (
-        <ul
+        <div style={{marginBottom: 'none'}}
             data-testid='NavBar-container'
             className={classes.wrapper}
         >
@@ -48,6 +48,6 @@ export const NavBar:React.FC = ({...props}: NavBarProps):ReactElement => {
             })
             }
             <AuthStatus />
-        </ul>
+        </div>
     )
 }

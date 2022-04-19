@@ -27,7 +27,7 @@ export const AddMatch: React.FC = ({ ...props }: AddMatchProps) => {
       }
     })
   }, [formState.p1_char, formState.p2_char])
-
+  
   const checkRequired = () => {
     const required_and_not_dirty = Object.keys(formState).reduce((prev, cur) => {
       if (!formState[cur].dirty && formState[cur].required) {
@@ -57,7 +57,7 @@ export const AddMatch: React.FC = ({ ...props }: AddMatchProps) => {
             formState[cur].valid = true
         }
       }
-      if (formState[cur].validationErrors.length === 0){
+      if (formState[cur].dirty && formState[cur].validationErrors.length === 0 ){
         formState[cur].valid = true
       }
     }, formState)
@@ -78,6 +78,10 @@ export const AddMatch: React.FC = ({ ...props }: AddMatchProps) => {
           dirty: true
         }
       };
+      if ( inputName == 'p1_char' || inputName == 'p2_char'){
+        newState.winning_char = newState.p1_char      
+      }
+ 
       newState = checkValid(newState)
       return newState
     })
@@ -124,17 +128,17 @@ export const AddMatch: React.FC = ({ ...props }: AddMatchProps) => {
 
 
   return (
-    <div className={classes.container}>
+    <div>
       {/* <pre style={{backgroundColor: "white"}}>{ JSON.stringify(formState,null,2)}</pre> */}
-      <select
-        name="type"
-        onChange={e => handleChange(e)}
-        className={classes.select} >
-        <option key={MatchLinkTypeEnum.VI} value={MatchLinkTypeEnum.VI}>{MatchLinkTypeEnumDisplay['VI']}</option>
-        <option key={MatchLinkTypeEnum.FC2} value={MatchLinkTypeEnum.FC2}>{MatchLinkTypeEnumDisplay['FC2']}</option>
-      </select >
-
       <form className={classes.form} onSubmit={onSubmit}>
+        <select
+          name="type"
+          onChange={e => handleChange(e)}
+          className={classes.select} >
+          <option key={MatchLinkTypeEnum.VI} value={MatchLinkTypeEnum.VI}>{MatchLinkTypeEnumDisplay['VI']}</option>
+          <option key={MatchLinkTypeEnum.FC2} value={MatchLinkTypeEnum.FC2}>{MatchLinkTypeEnumDisplay['FC2']}</option>
+        </select >
+
         <FormTextInput onChange={e => handleChange(e)} formItemState={formState.url}></FormTextInput>
         <FormTextInput onChange={e => handleChange(e)} formItemState={formState.timestamp}></FormTextInput>
         {((formState.type.value == MatchLinkTypeEnum.VI) && loadingVideoDetail.isLoaded) &&
@@ -164,10 +168,10 @@ export const AddMatch: React.FC = ({ ...props }: AddMatchProps) => {
         {
           submitErrors.length &&
           <div>
-            <p style={{ color: "white" }}>
+            <p>
               The following fields were required but not supplied:
             </p>
-            {submitErrors.map((error, i) => <div key={i} style={{ color: "white" }}> {error}</div>)}
+            {submitErrors.map((error, i) => <div key={i}> {error}</div>)}
           </div>
         }
         <input type="submit" />

@@ -17,8 +17,8 @@ type RuleNames =
   'listingContainer'
 
 const useStyles = createUseStyles<RuleNames, MatchListProps, CustomTheme>({
-  title: ({theme}) => ({
-    background: theme.background || 'black'
+  title: ({
+    // background: 'black'
   }),
   listing:  {},
   description: {},

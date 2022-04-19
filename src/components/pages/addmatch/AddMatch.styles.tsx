@@ -4,28 +4,17 @@ import { AddMatchProps } from './AddMatch.component'
 
 export type RuleNames =
   'title' |
-  'textInput' |
   'description' |
   'container' |
-  'form' |
-  'select'
-
+  'form'
 
 export const useStyles = createUseStyles<RuleNames, AddMatchProps, CustomTheme>({
-  title: ({ theme }) => ({
-    background: theme.background || 'black'
+  title: ({
+    // background: 'black'
   }),
-  textInput: {
-    color: "white",
-    // alignSelf: "flex-start",
-    // '& input':{
-    //   alignSelf: "stretch",
-    // } 
-  },
-  select: {},
   description: {},
-  container: ({ theme }) => ({
-    backgroundColor: 'black' || theme.background,
+  container: ({
+    // background: 'black'
   }),
   form: {
     display: "flex",

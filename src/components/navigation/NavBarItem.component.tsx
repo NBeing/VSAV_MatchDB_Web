@@ -9,8 +9,8 @@ type RuleNames =
   'link'
 
 const useStyles = createUseStyles<RuleNames, NavBarItemProps, CustomTheme>({
-  wrapper: ({theme}) => ({
-    background: theme.background || 'black'
+  wrapper: ({
+    // background: 'black'
   }),
   link:  {},
 })

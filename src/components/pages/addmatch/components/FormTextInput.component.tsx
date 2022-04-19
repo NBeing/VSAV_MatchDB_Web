@@ -3,7 +3,7 @@ import { Classes } from "jss"
 import React, { ChangeEvent } from "react"
 import { createUseStyles, useTheme } from "react-jss"
 import { FormItemState } from "../AddMatch.helpers"
-
+import { Input } from '@mui/material'
 export type FormTextInputRuleNames =
     'label' |
     'textInput' |
@@ -14,41 +14,39 @@ export type FormTextInputRuleNames =
     'container'
 
 interface FormTextInputProps {
-    onChange: (event: ChangeEvent<HTMLInputElement>) => void,
+    onChange: (event: (React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)) => void,
     formItemState: FormItemState
 }
 
 export const useStyles = createUseStyles<FormTextInputRuleNames, FormTextInputProps, CustomTheme>({
-    label: ({ theme }) => ({
-        color: 'white' || theme.background
-    }),
+    label: {
+    },
     textInput: {
-        color: "white",
-        border: "none",
-        backgroundColor: "rgba(0,0,0,0)"
+        // minWidth: "350px",
+        // color: "white",
+        // border: "none",
+        // backgroundColor: "rgba(0,0,0,0)"
     },
     container_dirty: {
-        color: "white",
-        borderColor: "yellow",
-        border: "2px solid",
-        backgroundColor: "rgba(0,0,0,0)"
+        // color: "white",
+        // borderColor: "yellow",
+        // border: "2px solid",
+        // backgroundColor: "rgba(0,0,0,0)"
     },
     container_invalid: {
-        color: "white",
-        borderColor: "red",
-        border: "2px solid",
-        backgroundColor: "rgba(0,0,0,0)"
+        // color: "white",
+        // borderColor: "red",
+        // border: "2px solid",
+        // backgroundColor: "rgba(0,0,0,0)"
     },
     container_valid: {
-        color: "white",
-        borderColor: "green",
-        border: "2px solid",
-        backgroundColor: "rgba(0,0,0,0)"
-
+        // color: "white",
+        // borderColor: "green",
+        // border: "2px solid",
+        // backgroundColor: "rgba(0,0,0,0)"
     },
-
-    container: ({ theme }) => ({
-        backgroundColor: 'black' || theme.background,
+    container: ({
+        display:"flex"
     }),
 })
 
@@ -65,7 +63,7 @@ const getFormItemValidationStateClass = (formItemState:FormItemState, classes:Cl
 export const FormTextInput: React.FC<FormTextInputProps> = ({ ...props }: FormTextInputProps) => {
     const theme: CustomTheme = useTheme<CustomTheme>()
     const classes = useStyles({ ...props, theme })
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => { props.onChange(e) }
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => { props.onChange(e) }
     const formItemState = props.formItemState
     const validityState = getFormItemValidationStateClass(formItemState, classes)
     console.log(classes.textInput)
@@ -74,7 +72,7 @@ export const FormTextInput: React.FC<FormTextInputProps> = ({ ...props }: FormTe
             <label className={classes.label}>
                 {formItemState.label}
             </label>
-            <input
+            <Input
                 className={classes.textInput}
                 name={formItemState.name}
                 value={props.formItemState.value}
