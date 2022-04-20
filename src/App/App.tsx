@@ -1,38 +1,17 @@
 import * as React from "react";
 import { Outlet} from "react-router-dom";
 import { NavBar } from "@Components/navigation/NavBar.component";
+import { Paper } from "@mui/material";
 
-import {createUseStyles, useTheme} from 'react-jss'
-import type { CustomTheme } from '@Theme/Theme'
-
-
-type RuleNames = 'wrapper'
-
-
-const useStyles = createUseStyles<RuleNames, AppProps, CustomTheme>({
-  // wrapper: ({theme}) => ({
-  //   background: theme.background || 'black'
-  // })
-  wrapper: ({
-      // background: 'black'
-    })
-})
-
-interface AppProps {}
-
-const App:React.FC = ({...props}):React.ReactElement => {
-  const theme:CustomTheme = useTheme<CustomTheme>()
-  const classes = useStyles({...props, theme})
-
+const App:React.FC = ():React.ReactElement => {
   return (
-    <div 
-      className={classes.wrapper} 
+    <Paper
       data-testid="app-wrapper"
     >
       <h1>VSAV MATCH DBEE</h1>
       <NavBar/>
       <Outlet />
-    </div>
+    </Paper>
   );
 }
 
