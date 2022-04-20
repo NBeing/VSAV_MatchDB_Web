@@ -1,5 +1,5 @@
 import MatchInfoService from "@MatchService/MatchInfo.service";
-import React, { ChangeEvent, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 // import IMatchData from "@MatchService/MatchData.type";
 import { MatchLinkTypeEnum, MatchLinkTypeEnumDisplay } from "@Common/enums/matchLinkType.enum";
 
@@ -8,10 +8,12 @@ import type { CustomTheme } from '@Theme/Theme'
 import IMatchData from "@MatchService/MatchData.type";
 import YoutubeUtil from "@Common/util/youtube.util"
 import { useDebouncedEffect } from "@Common/hooks/useDebouncedEffect"
-import { allCharOptions, FormState, INITIAL_FORM_STATE } from "./AddMatch.helpers";
+import { allCharOptions, FormItemOnChange, FormState, INITIAL_FORM_STATE } from "./AddMatch.helpers";
 import { useStyles } from "./AddMatch.styles";
 import { FormTextInput } from "./components/FormTextInput.component";
 import { FormOptionSelect } from "./components/FormOptionSelect.component";
+import { Card } from "@mui/material";
+import { FormToggle } from "./components/FormToggle";
 
 
 export interface AddMatchProps { }
@@ -64,9 +66,11 @@ export const AddMatch: React.FC = ({ ...props }: AddMatchProps) => {
     console.log("new formstate", formState)
     return formState
   }
-  const handleChange = (event: (ChangeEvent<HTMLSelectElement> | ChangeEvent<HTMLInputElement>)) => {
-    const newValue = event.target.value;
-    const inputName = event.target.name;
+  
+  const handleChange = (_event: unknown, formItemOnChange:FormItemOnChange) => {
+    console.log("Handle change", formItemOnChange)
+    const newValue = formItemOnChange.value;
+    const inputName = formItemOnChange.name;
 
     setFormState((prevState: FormState) => {
       // console.log("Setting form state", prevState)
@@ -128,43 +132,48 @@ export const AddMatch: React.FC = ({ ...props }: AddMatchProps) => {
 
 
   return (
-    <div>
+    <Card>
       {/* <pre style={{backgroundColor: "white"}}>{ JSON.stringify(formState,null,2)}</pre> */}
       <form className={classes.form} onSubmit={onSubmit}>
-        <select
-          name="type"
+      {/* This should be changed to a toggle */}
+        <FormToggle 
           onChange={e => handleChange(e)}
-          className={classes.select} >
-          <option key={MatchLinkTypeEnum.VI} value={MatchLinkTypeEnum.VI}>{MatchLinkTypeEnumDisplay['VI']}</option>
-          <option key={MatchLinkTypeEnum.FC2} value={MatchLinkTypeEnum.FC2}>{MatchLinkTypeEnumDisplay['FC2']}</option>
-        </select >
-
-        <FormTextInput onChange={e => handleChange(e)} formItemState={formState.url}></FormTextInput>
-        <FormTextInput onChange={e => handleChange(e)} formItemState={formState.timestamp}></FormTextInput>
+          options={[
+            { key: MatchLinkTypeEnum.VI,
+              value: MatchLinkTypeEnum.VI,
+              display: MatchLinkTypeEnumDisplay['VI'] },
+            { key: MatchLinkTypeEnum.FC2,
+              value: MatchLinkTypeEnum.FC2,
+              display: MatchLinkTypeEnumDisplay['FC2'] }  
+          ]}
+          formItemState={formState.type}
+        />
+        <FormTextInput onChange={handleChange} formItemState={formState.url}></FormTextInput>
+        <FormTextInput onChange={handleChange} formItemState={formState.timestamp}></FormTextInput>
         {((formState.type.value == MatchLinkTypeEnum.VI) && loadingVideoDetail.isLoaded) &&
           <>
-            <FormTextInput onChange={e => handleChange(e)} formItemState={formState.videoTitle}></FormTextInput>
-            <FormTextInput onChange={e => handleChange(e)} formItemState={formState.uploader}></FormTextInput>
-            <FormTextInput onChange={e => handleChange(e)} formItemState={formState.dateUploaded}></FormTextInput>
+            <FormTextInput onChange={handleChange} formItemState={formState.videoTitle}></FormTextInput>
+            <FormTextInput onChange={handleChange} formItemState={formState.uploader}></FormTextInput>
+            <FormTextInput onChange={handleChange} formItemState={formState.dateUploaded}></FormTextInput>
           </>
         }
         <FormOptionSelect 
-          onChange={e => handleChange(e)}
+          onChange={handleChange}
           options={allCharOptions}
           formItemState={formState.p1_char}
         />
         <FormOptionSelect 
-          onChange={e => handleChange(e)}
+          onChange={handleChange}
           options={allCharOptions}
           formItemState={formState.p2_char} 
         />
         <FormOptionSelect 
-          onChange={e => handleChange(e)}
+          onChange={handleChange}
           options={winningCharOptions}
           formItemState={formState.winning_char} 
         />
-        <FormTextInput onChange={e => handleChange(e)} formItemState={formState.p1_name}></FormTextInput>
-        <FormTextInput onChange={e => handleChange(e)} formItemState={formState.p2_name}></FormTextInput>
+        <FormTextInput onChange={handleChange} formItemState={formState.p1_name}></FormTextInput>
+        <FormTextInput onChange={handleChange} formItemState={formState.p2_name}></FormTextInput>
         {
           submitErrors.length &&
           <div>
@@ -176,6 +185,6 @@ export const AddMatch: React.FC = ({ ...props }: AddMatchProps) => {
         }
         <input type="submit" />
       </form>
-    </div>
+    </Card>
   );
 }
