@@ -7,12 +7,15 @@ import App from '@Root/App/App'
 import { AuthProvider } from 'services/auth/Auth.helpers'
 import { muiTheme } from "@Theme/Theme"
 import { AppRoutes } from '@Routes/Routes'
+import { CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material";
+
 function index() {
     return (
         <React.StrictMode>
             <BrowserRouter>
                 <ThemeProvider theme={muiTheme}>
+                    <CssBaseline />
                     <AuthProvider>
                         <App/>
                         <AppRoutes />
