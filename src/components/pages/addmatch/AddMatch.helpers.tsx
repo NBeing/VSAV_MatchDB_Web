@@ -1,6 +1,11 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { MatchLinkTypeEnum } from "@Common/enums/matchLinkType.enum";
 import { CharNamesEnum, CharNamesEnumDisplay } from "@Common/enums/charNames.enum";
+
+export type FormItemOnChange = {
+    name: string,
+    value: string
+}
 
 export enum NoneOption { NA = "NA" }
 export const NoneOptionDisplay = { [NoneOption.NA]: "None Selected" }
@@ -32,12 +37,19 @@ const isGtEqZero = (num:unknown) => (parseInt(num as string)) >= 0
 const isString = ( str : unknown) => typeof str == 'string'
 const isNotNoneOption = ( option:CharNamesOptions) => option !== CharNamesOptions.NA  
 
-export const allCharOptions = Object.keys(CharNamesOptions)
+export type CharAutocompleteOption = {
+    key: string,
+    value: string,
+    display: string
+}
+export const allCharOptions = Object.keys(CharNamesDisplayOptions)
 .map(key => {
   return (
-    <option key={key} value={key}>
-      {CharNamesDisplayOptions[key]}
-    </option>
+      {
+          key:CharNamesDisplayOptions[key],
+          value: key,
+          display: CharNamesDisplayOptions[key]   
+      }
   )
 })
 
