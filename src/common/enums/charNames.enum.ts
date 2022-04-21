@@ -16,6 +16,43 @@ export enum CharNamesEnum {
   ZA = "ZA",
 }
 
+export const CharShortNameToFullName:Record<string, string> = {
+  ["AN"] : "Anakaris",
+  ["AU"] : "Aulbath",
+  ["BI"] : "Bishamon",
+  ["BU"] : "Bulleta",
+  ["DE"] : "Demitri",
+  ["FE"] : "Felicia",
+  ["GA"] : "Gallon",
+  ["JE"] : "Jedah",
+  ["LE"] : "Lei-Lei",
+  ["LI"] : "Lillith",
+  ["MO"] : "Morrigan",
+  ["SA"] : "Sasquatch",
+  ["VI"] : "Victor",
+  ["QB"] : "Q-Bee",
+  ["ZA"] : "Zabel",
+}
+export type CharShortName = keyof typeof CharShortNameToFullName
+export type CharFullName = keyof typeof CharFullNameToShortName
+
+export const CharFullNameToShortName:Record<string, string> = {
+  ["Anakaris" ] : "AN",
+  ["Aulbath"  ] : "AU",
+  ["Bishamon" ] : "BI",
+  ["Bulleta"  ] : "BU",
+  ["Demitri"  ] : "DE",
+  ["Felicia"  ] : "FE",
+  ["Gallon"   ] : "GA",
+  ["Jedah"    ] : "JE",
+  ["Lei-Lei"  ] : "LE",
+  ["Lillith"  ] : "LI",
+  ["Morrigan" ] : "MO",
+  ["Sasquatch"] : "SA",
+  ["Victor"   ] : "VI",
+  ["Q-Bee"    ] : "QB",
+  ["Zabel"    ] : "ZA",
+}
 export const CharNamesEnumDisplay: { [index: string]: string } = {
   [CharNamesEnum.AN] : "Anakaris",
   [CharNamesEnum.AU] : "Aulbath",

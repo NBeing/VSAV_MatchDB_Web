@@ -1,38 +1,55 @@
 import MatchInfoService from "@MatchService/MatchInfo.service";
-import React, { useMemo, useState } from "react";
-// import IMatchData from "@MatchService/MatchData.type";
-import { MatchLinkTypeEnum, MatchLinkTypeEnumDisplay } from "@Common/enums/matchLinkType.enum";
-
-import { useTheme } from 'react-jss'
-import type { CustomTheme } from '@Theme/Theme'
+import React, { useEffect, useMemo, useState } from "react";
 import IMatchData from "@MatchService/MatchData.type";
-import YoutubeUtil from "@Common/util/youtube.util"
-import { useDebouncedEffect } from "@Common/hooks/useDebouncedEffect"
-import { allCharOptions, FormItemOnChange, FormState, INITIAL_FORM_STATE } from "./AddMatch.helpers";
-import { useStyles } from "./AddMatch.styles";
+import { allCharOptions, FormItemOnChange, FormState, INITIAL_FORM_STATE, ContentOptions, AllowedFormValue } from "./AddMatch.helpers";
 import { FormTextInput } from "./components/FormTextInput.component";
 import { FormOptionSelect } from "./components/FormOptionSelect.component";
 import { Card } from "@mui/material";
 import { FormToggle } from "./components/FormToggle";
-
+import { CharFullNameToShortName } from "@Common/enums/charNames.enum";
+import { MatchLinkTypeFullNameToShortName, MatchLinkTypeShortNameToFullName } from "@Common/enums/matchLinkType.enum";
+import { FormYoutubeInput } from "./components/FormYoutubeInput.component";
+// import IMatchData from "@MatchService/MatchData.type";
 
 export interface AddMatchProps { }
-export const AddMatch: React.FC = ({ ...props }: AddMatchProps) => {
-  const theme: CustomTheme = useTheme<CustomTheme>()
-  const classes = useStyles({ ...props, theme })
+export const AddMatch: React.FC = () => {
   const [formState, setFormState] = useState<FormState>(INITIAL_FORM_STATE)
 
+  // Update the options for the winning character when p1 or p2 char
   const winningCharOptions = useMemo(() => {
     return allCharOptions.filter(charOption => {
       if (charOption.key == formState.p1_char.value || charOption.key == formState.p2_char.value) {
-        return charOption.key
+        return charOption
       }
     })
   }, [formState.p1_char, formState.p2_char])
-  
+
+  // Set the winning char to null automatically when p1 or p2 changes
+  useEffect(() => {
+    setFormState((prevState: FormState) => ({
+        ...prevState,
+        "winning_char": {
+          ...prevState["winning_char"],
+          value: null,
+          dirty: true
+        }
+      }))
+  }, [formState.p1_char, formState.p2_char])
+
   const checkRequired = () => {
     const required_and_not_dirty = Object.keys(formState).reduce((prev, cur) => {
-      if (!formState[cur].dirty && formState[cur].required) {
+      const formItem = formState[cur]
+      let required:boolean
+      if ( 
+        formItem.name === "timestamp" && 
+        formItem.value === MatchLinkTypeFullNameToShortName.FC2
+      ){
+        required = false
+      } else {
+        required = formItem.required
+      }
+  
+      if (!formItem.dirty && required) {
         return [...prev, cur]
       } else {
         return prev
@@ -41,39 +58,57 @@ export const AddMatch: React.FC = ({ ...props }: AddMatchProps) => {
     return required_and_not_dirty
   }
 
+  const [allValid, setAllValid] = useState(false) 
+  // Make this less imperative lol
   const checkValid = (formState: FormState) => {
+    let allAreValid = true
     Object.keys(formState).forEach(cur => {
-      console.log("Looking at", cur, formState[cur])
-      if (formState[cur].validators.length && formState[cur].dirty) {
+      const currentFormItem = formState[cur]
+      // Kludge for fc2 timestamp
+      const isFC2wTimestamp = currentFormItem.name === "timestamp" && currentFormItem.value === MatchLinkTypeFullNameToShortName.FC2
+      if(isFC2wTimestamp) {
+        currentFormItem.required = false
+        currentFormItem.validators = []
+      }
+
+      console.log("Looking at", cur, currentFormItem)
+      if (currentFormItem.validators.length && currentFormItem.dirty) {
         console.log("Checking for", cur)
-        formState[cur].validationErrors = []
-        formState[cur].validators.forEach(validator => {
-          console.log(validator(formState[cur].value))
-          if (!validator(formState[cur].value)) {
+        currentFormItem.validationErrors = []
+        currentFormItem.validators.forEach(validator => {
+          console.log(validator(currentFormItem.value as string))
+          if (!validator(currentFormItem.value as string)) {
             console.log(validator)
-            formState[cur].validationErrors = [...formState[cur].validationErrors, validator.name]
-            formState[cur].valid = false
+            currentFormItem.validationErrors = [...currentFormItem.validationErrors, validator.name]
+            currentFormItem.valid = false
+            allAreValid = false
           }
         })
-        if (formState[cur].validationErrors.length === 0){
-            formState[cur].valid = true
+        if (currentFormItem.validationErrors.length === 0){
+            currentFormItem.valid = true
         }
       }
-      if (formState[cur].dirty && formState[cur].validationErrors.length === 0 ){
-        formState[cur].valid = true
+      if (
+        currentFormItem.dirty && currentFormItem.validationErrors.length === 0 ||
+        !currentFormItem.dirty && !currentFormItem.required
+      ){
+        currentFormItem.valid = true
       }
     }, formState)
-    console.log("new formstate", formState)
+    setAllValid(allAreValid)
     return formState
   }
   
-  const handleChange = (_event: unknown, formItemOnChange:FormItemOnChange) => {
-    console.log("Handle change", formItemOnChange)
-    const newValue = formItemOnChange.value;
+  const handleChange = (_event: unknown, formItemOnChange:FormItemOnChange | null) => {
+    // console.log("Handle change", formItemOnChange)
+    if ( !formItemOnChange ) {
+      return
+    }
+    const newValue  = formItemOnChange.value;
     const inputName = formItemOnChange.name;
+    console.log("New", newValue,"Inp", inputName)
 
     setFormState((prevState: FormState) => {
-      // console.log("Setting form state", prevState)
       let newState = {
         ...prevState,
         [inputName]: {
@@ -81,82 +116,72 @@ export const AddMatch: React.FC = ({ ...props }: AddMatchProps) => {
           value: newValue,
           dirty: true
         }
-      };
-      if ( inputName == 'p1_char' || inputName == 'p2_char'){
-        newState.winning_char = newState.p1_char      
-      }
- 
+      }; 
       newState = checkValid(newState)
       return newState
     })
   }
+  const formDataToPostData = (formState:FormState) => {
+    console.log("formstate before", formState)
+    const data = Object.keys(formState).reduce((acc, key) => {
+      acc[key] = formState[key].value
+      return acc
+    }, {} as Record<keyof FormState, AllowedFormValue>)
 
+    data.p1_char      = CharFullNameToShortName[formState.p1_char.value as string]
+    data.p2_char      = CharFullNameToShortName[formState.p2_char.value as string]
+    data.winning_char = CharFullNameToShortName[formState.winning_char.value as string]
+    data.type         = MatchLinkTypeFullNameToShortName[formState.type.value as string]
+    if ( data.type === MatchLinkTypeFullNameToShortName.FC2 ){
+      delete data.timestamp
+    }
+    
+    console.log("Data type", data.type, MatchLinkTypeFullNameToShortName[formState.type.value as string] )
+    // Ugh
+    return data as unknown as IMatchData
+  }
   const [submitErrors, setSubmitErrors] = useState<string[]>([])
   const onSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
     const required_and_not_dirty = checkRequired()
     if (required_and_not_dirty.length) {
-      console.log("Required And Not Dirty", required_and_not_dirty)
       setSubmitErrors(required_and_not_dirty)
       return
     }
     checkRequired()
-    // checkValid()
-    const data = Object.keys(formState).reduce<IMatchData>((acc, key) => {
-      console.log(acc, key)
-      acc[key] = formState[key].value
-      return acc
-    }, {} as IMatchData)
-    console.log(data)
-    await MatchInfoService.create(data)
+    checkValid(formState)
+
+    const postData:IMatchData = formDataToPostData(formState)
+    try {
+      await MatchInfoService.create(postData)
+    } catch (e){
+      console.log("Errors:" , e)
+    }
   }
 
-  const [loadingVideoDetail, setLoadingVideoDetail] = useState({ isLoading: false, isLoaded: false })
-  useDebouncedEffect(async () => {
-    const url = formState.url.value as string
-    if (url && YoutubeUtil.isYoutube(url)) {
-      setLoadingVideoDetail((state) => ({ ...state, isLoading: true }))
-      const { uploader, date_uploaded, video_title } = await MatchInfoService.ytDetails(url)
-      setFormState((state) => {
-        return {
-          ...state,
-          uploader: { ...state.uploader, value: uploader },
-          dateUploaded: { ...state.dateUploaded, value: date_uploaded },
-          videoTitle: { ...state.uploader, value: video_title }
-
-        }
-      })
-      setLoadingVideoDetail((state) => ({ ...state, isLoaded: true }))
-    }
-  }, [formState.url], 1000)
-
+  const ContentInputType = () => {
+    if ( formState.type.value === MatchLinkTypeShortNameToFullName.VI ){
+      const formItemState = {
+        url: formState.url,
+        timestamp: formState.timestamp,
+      }
+      return (<FormYoutubeInput onChange={handleChange} formItemState ={formItemState}/>)
+    } else { 
+      return (<FormTextInput onChange={handleChange} formItemState={formState.url}></FormTextInput>)
+    } 
+  }
 
   return (
     <Card>
-      {/* <pre style={{backgroundColor: "white"}}>{ JSON.stringify(formState,null,2)}</pre> */}
-      <form className={classes.form} onSubmit={onSubmit}>
-      {/* This should be changed to a toggle */}
+      <form onSubmit={onSubmit}>
         <FormToggle 
-          onChange={e => handleChange(e)}
-          options={[
-            { key: MatchLinkTypeEnum.VI,
-              value: MatchLinkTypeEnum.VI,
-              display: MatchLinkTypeEnumDisplay['VI'] },
-            { key: MatchLinkTypeEnum.FC2,
-              value: MatchLinkTypeEnum.FC2,
-              display: MatchLinkTypeEnumDisplay['FC2'] }  
-          ]}
+          onChange={handleChange}
+          options={ ContentOptions }
           formItemState={formState.type}
+          defaultValue={MatchLinkTypeShortNameToFullName.VI}
         />
-        <FormTextInput onChange={handleChange} formItemState={formState.url}></FormTextInput>
-        <FormTextInput onChange={handleChange} formItemState={formState.timestamp}></FormTextInput>
-        {((formState.type.value == MatchLinkTypeEnum.VI) && loadingVideoDetail.isLoaded) &&
-          <>
-            <FormTextInput onChange={handleChange} formItemState={formState.videoTitle}></FormTextInput>
-            <FormTextInput onChange={handleChange} formItemState={formState.uploader}></FormTextInput>
-            <FormTextInput onChange={handleChange} formItemState={formState.dateUploaded}></FormTextInput>
-          </>
-        }
+        { ContentInputType() }
+
         <FormOptionSelect 
           onChange={handleChange}
           options={allCharOptions}
@@ -167,11 +192,14 @@ export const AddMatch: React.FC = ({ ...props }: AddMatchProps) => {
           options={allCharOptions}
           formItemState={formState.p2_char} 
         />
-        <FormOptionSelect 
-          onChange={handleChange}
-          options={winningCharOptions}
-          formItemState={formState.winning_char} 
-        />
+        { ( formState.p1_char.value && formState.p2_char.value ) &&
+          <FormToggle 
+            onChange={handleChange}
+            options={ winningCharOptions }
+            formItemState={formState.winning_char}
+            defaultValue={null}
+          >{formState.p1_char.value}{ formState.p2_char.value}</FormToggle>
+        }
         <FormTextInput onChange={handleChange} formItemState={formState.p1_name}></FormTextInput>
         <FormTextInput onChange={handleChange} formItemState={formState.p2_name}></FormTextInput>
         {
@@ -183,7 +211,7 @@ export const AddMatch: React.FC = ({ ...props }: AddMatchProps) => {
             {submitErrors.map((error, i) => <div key={i}> {error}</div>)}
           </div>
         }
-        <input type="submit" />
+        <input type="submit" disabled={!allValid} />
       </form>
     </Card>
   );

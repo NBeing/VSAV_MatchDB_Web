@@ -21,7 +21,7 @@ const muiTheme = createTheme({
     palette: {
       mode: "dark",
       primary: {
-        main: '#410c0d',
+        main: '#00FF00',
       },
       secondary: {
         main: '#f50057',

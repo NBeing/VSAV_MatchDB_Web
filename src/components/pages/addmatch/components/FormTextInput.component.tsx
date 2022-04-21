@@ -1,11 +1,7 @@
 import React from "react"
-import { CustomTheme } from "@Root/theme/Theme"
-import { createUseStyles, useTheme } from "react-jss"
 import { FormItemOnChange, FormItemState } from "../AddMatch.helpers"
-import { Input } from '@mui/material'
-export type FormTextInputRuleNames =
-    'label' |
-    'textInput'
+import { Box, TextField } from '@mui/material'
+import { FormValidationDisplay } from "./FormValidationDisplay.component"
 
 interface FormTextInputProps {
     onChange: (
@@ -15,14 +11,7 @@ interface FormTextInputProps {
     formItemState: FormItemState
 }
 
-export const useStyles = createUseStyles<FormTextInputRuleNames, FormTextInputProps, CustomTheme>({
-    label: {},
-    textInput: {},
-})
-
 export const FormTextInput: React.FC<FormTextInputProps> = ({ ...props }: FormTextInputProps) => {
-    const theme: CustomTheme = useTheme<CustomTheme>()
-    const classes = useStyles({ ...props, theme })
     const formItemState = props.formItemState
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => { 
         props.onChange(e, {
@@ -32,25 +21,19 @@ export const FormTextInput: React.FC<FormTextInputProps> = ({ ...props }: FormTe
     }
 
     return (
-        <>
-            <label className={classes.label}>
-                {formItemState.label}
-            </label>
-            <Input
-                className={classes.textInput}
+        <Box sx={{
+            display: 'flex',
+            flexDirection: 'row' 
+        }}>
+
+            <TextField
                 name={formItemState.name}
                 value={props.formItemState.value}
                 onChange={handleChange}
                 type={formItemState.type}
+                label={formItemState.label}
             />
-            <div> Is valid? : { (formItemState.valid) ? "Yes!": "No!" } </div>
-            {(formItemState.validationErrors.length > 0) &&
-                formItemState.validationErrors.map((err, i) => (
-                    <p key={i}>
-                        Validation Failed for: {err}
-                    </p>
-                ))
-            }    
-        </>
+            <FormValidationDisplay formItemState={formItemState}></FormValidationDisplay>
+        </Box>
     )
 }

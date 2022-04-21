@@ -1,20 +1,24 @@
 import { ReactNode } from "react";
-import { MatchLinkTypeEnum } from "@Common/enums/matchLinkType.enum";
-import { CharNamesEnum, CharNamesEnumDisplay } from "@Common/enums/charNames.enum";
+import { CharFullNameToShortName } from "@Common/enums/charNames.enum";
+import YoutubeUtil from "@Common/util/youtube.util"
+import { MatchLinkTypeShortNameToFullName } from "@Common/enums/matchLinkType.enum";
 
+export type AllowedFormValue = string | number | readonly string[] | undefined | null
 export type FormItemOnChange = {
     name: string,
-    value: string
+    value: AllowedFormValue
 }
+export type VideoDetails = {
+    uploader:  string,
+    dateUploaded: string,
+    videoTitle: string
+  }
 
-export enum NoneOption { NA = "NA" }
-export const NoneOptionDisplay = { [NoneOption.NA]: "None Selected" }
+export type GenericValidator = 
+    ((str: string) => boolean) |
+    ((number: string) => boolean) | 
+    ((str: string) => boolean )
 
-export type CharNamesOptions = CharNamesEnum | NoneOption
-export const CharNamesOptions = { ...NoneOption, ...CharNamesEnum }
-
-export const CharNamesDisplayOptions = { ...NoneOptionDisplay, ...CharNamesEnumDisplay, }
-export type AllowedFormValue = string | number | readonly string[] | undefined
 export type FormItemState = {
     name: string,
     type: string,
@@ -22,43 +26,50 @@ export type FormItemState = {
     value: AllowedFormValue,
     dirty: boolean,
     valid: boolean,
-    validators: ((allowedFormValue: AllowedFormValue) => boolean)[],
+    validators: GenericValidator[],
     required: boolean,
     validationErrors: string[]
     options?: ReactNode[]
 }
-import YoutubeUtil from "@Common/util/youtube.util"
-export interface FormState {
-    [key: string]: FormItemState
-}
-// Validators
-const isInt = (num:unknown) => Number.isInteger(parseInt(num as string))
-const isGtEqZero = (num:unknown) => (parseInt(num as string)) >= 0 
-const isString = ( str : unknown) => typeof str == 'string'
-const isNotNoneOption = ( option:CharNamesOptions) => option !== CharNamesOptions.NA  
 
-export type CharAutocompleteOption = {
+export type FormState = Record<string, FormItemState>
+
+export type FormOnChangeData = {
     key: string,
     value: string,
     display: string
 }
-export const allCharOptions = Object.keys(CharNamesDisplayOptions)
-.map(key => {
-  return (
-      {
-          key:CharNamesDisplayOptions[key],
-          value: key,
-          display: CharNamesDisplayOptions[key]   
-      }
-  )
-})
+
+export const CharOptionsWithNone = [...Object.keys(CharFullNameToShortName)]
+
+export const allCharOptions = [
+    ...CharOptionsWithNone.map(key =>({
+            key:key,
+            value: key,
+            display: key   
+        }))
+    ]
+// Validators
+const isInt:GenericValidator            = (num:unknown) => Number.isInteger(parseInt(num as string))
+const isGtEqZero:GenericValidator       = (num:unknown) => (parseInt(num as string)) >= 0 
+const isStringOrNull:GenericValidator   = ( str : unknown) =>  typeof str == 'string'
+const isNotNoneOption:GenericValidator  = (option:unknown) => option !== null
+
+export const ContentOptions = [
+    { key: MatchLinkTypeShortNameToFullName.VI,
+      value: MatchLinkTypeShortNameToFullName.VI,
+      display: MatchLinkTypeShortNameToFullName.VI },
+    { key: MatchLinkTypeShortNameToFullName.FC2,
+      value: MatchLinkTypeShortNameToFullName.FC2,
+      display: MatchLinkTypeShortNameToFullName.FC2 }  
+  ]
 
 export const INITIAL_FORM_STATE: FormState = {
     type: {
         name: "type",
         label: "Video Source",
         type: "select",
-        value: MatchLinkTypeEnum.VI,
+        value: MatchLinkTypeShortNameToFullName.VI,
         dirty: true, // Set dirty and valid true because VI will be the option most people want.
         valid: true,
         validators: [],
@@ -91,7 +102,7 @@ export const INITIAL_FORM_STATE: FormState = {
         name: "p1_char",
         type: "select",
         label: "Player 1 Character",
-        value: CharNamesOptions.NA,
+        value: null,
         dirty: false,
         valid: false,
         validators: [isNotNoneOption],
@@ -103,7 +114,7 @@ export const INITIAL_FORM_STATE: FormState = {
         name: "p2_char",
         type: "select",
         label: "Player 2 Character",
-        value: CharNamesOptions.NA,
+        value: null,
         dirty: false,
         valid: false,
         validators: [isNotNoneOption],
@@ -115,7 +126,7 @@ export const INITIAL_FORM_STATE: FormState = {
         name: "winning_char",
         type: "select",
         label: "Winning Character",
-        value: CharNamesOptions.NA,
+        value: null,
         dirty: false,
         valid: false,
         validators: [isNotNoneOption],
@@ -130,7 +141,7 @@ export const INITIAL_FORM_STATE: FormState = {
         value: '',
         dirty: false,
         valid: false,
-        validators: [isString],
+        validators: [isStringOrNull],
         required: false,
         validationErrors: []
     },
@@ -141,40 +152,7 @@ export const INITIAL_FORM_STATE: FormState = {
         value: '',
         dirty: false,
         valid: false,
-        validators: [isString],
-        required: false,
-        validationErrors: []
-    },
-    videoTitle: {
-        name: "video_title",
-        type: "text",
-        label: "Video Title",
-        value: '',
-        dirty: false,
-        valid: false,
-        validators: [isString],
-        required: false,
-        validationErrors: []
-    },
-    uploader: {
-        name: "uploader",
-        type: "text",
-        label: "Uploaded By",
-        value: '',
-        dirty: false,
-        valid: false,
-        validators: [isString],
-        required: false,
-        validationErrors: []
-    },
-    dateUploaded: {
-        name: "date_uploaded",
-        type: "text",
-        label: "Uploaded On",
-        value: '',
-        dirty: false,
-        valid: false,
-        validators: [isString],
+        validators: [isStringOrNull],
         required: false,
         validationErrors: []
     }

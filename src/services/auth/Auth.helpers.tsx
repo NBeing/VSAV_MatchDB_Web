@@ -22,7 +22,12 @@ export interface IAuthContext {
     signin:  (credentials:Credentials, callback: VoidFunction) => void;
     logout: (callback: VoidFunction) => void;
 }
-  
+export type VideoDetails = {
+    uploader:  string,
+    dateUploaded: string,
+    videoTitle: string
+  }
+
 export const AuthContext = React.createContext<IAuthContext>(null!);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {

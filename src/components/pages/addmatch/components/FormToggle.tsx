@@ -1,24 +1,25 @@
 import React from "react"
-import { CharAutocompleteOption, FormItemOnChange, FormItemState } from "../AddMatch.helpers"
-import { ToggleButton, ToggleButtonGroup } from '@mui/material'
-// import { useTheme } from "@mui/material"
+import { FormOnChangeData, FormItemOnChange, FormItemState, AllowedFormValue } from "../AddMatch.helpers"
+import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material'
+import { FormValidationDisplay } from "./FormValidationDisplay.component"
 
 interface FormToggleProps {
-    onChange: (e: unknown, formItemOnChange:FormItemOnChange) => void,
+    onChange: (e: unknown, formItemOnChange:FormItemOnChange | null) => void,
     formItemState: FormItemState,
-    options: CharAutocompleteOption
+    options: {key: string, value: string, display:string}[],
+    defaultValue: AllowedFormValue
 }
 
 export const FormToggle: React.FC<FormToggleProps> = ({ ...props }: FormToggleProps) => {
     const formItemState = props.formItemState
-    const options = props.options
-    const [contentType, setContentType] = React.useState<CharAutocompleteOption | null>(options[0].key);
+    const { options, defaultValue }  = props
+    const [contentType, setContentType] = React.useState<AllowedFormValue | null>(defaultValue);
 
     const handleContentType = (
         event: React.MouseEvent<HTMLElement>,
-        newContentType: CharAutocompleteOption,
+        newContentType: FormOnChangeData,
       ) => {
-        setContentType(newContentType);
+        setContentType(newContentType.key);
         props.onChange(event, {
             name: formItemState.name,
             value: newContentType.key
@@ -26,28 +27,25 @@ export const FormToggle: React.FC<FormToggleProps> = ({ ...props }: FormTogglePr
       };
 
     return (
-        <>
+        <Box sx={{
+            display: 'flex',
+            flexDirection: 'row' 
+        }}>
              <ToggleButtonGroup
                 value={contentType}
                 exclusive
                 color="primary"
                 onChange={handleContentType}
             >
-                <ToggleButton value={options[0].key}>
-                    { options[0].display }
-                </ToggleButton>
-                <ToggleButton value={options[1].key}>
-                    { options[1].display }
-                </ToggleButton>   
+                { options.map( (option) => {
+                    return (
+                        <ToggleButton key={option.key} value={option.key}>
+                            { option.key }
+                        </ToggleButton>
+                    )
+                }) }
             </ToggleButtonGroup>
-            <div> Is valid? : { (formItemState.valid) ? "Yes!": "No!" } </div>
-            {(formItemState.validationErrors.length > 0) &&
-                formItemState.validationErrors.map((err, i) => (
-                    <p key={i} style={{ color: "white" }}>
-                        Validation Failed for: {err}
-                    </p>
-                ))
-            }  
-        </>
+            <FormValidationDisplay formItemState={formItemState}></FormValidationDisplay>
+        </Box>
     )
 }

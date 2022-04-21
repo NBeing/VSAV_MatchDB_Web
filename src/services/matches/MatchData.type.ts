@@ -1,15 +1,15 @@
-import { CharNamesEnum } from "@CommonEnums/charNames.enum";
-import { MatchLinkTypeEnum } from "@CommonEnums/matchLinkType.enum";
+import { CharShortName } from "@CommonEnums/charNames.enum";
+import { MatchLinkTypeShortName } from "@CommonEnums/matchLinkType.enum";
 
 export default interface IMatchData {
   id?: any | null,
-  type: MatchLinkTypeEnum,
+  type: MatchLinkTypeShortName,
   url: string,
-  p1_char: CharNamesEnum,
-  p2_char: CharNamesEnum,
+  p1_char: CharShortName,
+  p2_char: CharShortName,
   p1_name?: string,
   p2_name?: string,
-  winning_char: CharNamesEnum,
+  winning_char: CharShortName,
   // YT Data  
   video_title?: string,
   timestamp: number,
