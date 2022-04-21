@@ -1,5 +1,5 @@
 import React from "react"
-import { FormOnChangeData, FormItemOnChange, FormItemState, AllowedFormValue } from "../AddMatch.helpers"
+import { FormItemOnChange, FormItemState, AllowedFormValue } from "../AddMatch.helpers"
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material'
 import { FormValidationDisplay } from "./FormValidationDisplay.component"
 
@@ -17,12 +17,12 @@ export const FormToggle: React.FC<FormToggleProps> = ({ ...props }: FormTogglePr
 
     const handleContentType = (
         event: React.MouseEvent<HTMLElement>,
-        newContentType: FormOnChangeData,
+        newContentType: AllowedFormValue,
       ) => {
-        setContentType(newContentType.key);
+        setContentType(newContentType);
         props.onChange(event, {
             name: formItemState.name,
-            value: newContentType.key
+            value: newContentType
         })
       };
 
