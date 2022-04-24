@@ -9,15 +9,16 @@ export type FormItemOnChange = {
     value: AllowedFormValue
 }
 export type VideoDetails = {
-    uploader:  string,
+    uploader: string,
     dateUploaded: string,
-    videoTitle: string
-  }
+    videoTitle: string,
+    youtubeId: string
+}
 
-export type GenericValidator = 
+export type GenericValidator =
     ((str: string) => boolean) |
-    ((number: string) => boolean) | 
-    ((str: string) => boolean )
+    ((number: string) => boolean) |
+    ((str: string) => boolean)
 
 export type FormItemState = {
     name: string,
@@ -43,26 +44,30 @@ export type FormOnChangeData = {
 export const CharOptionsWithNone = [...Object.keys(CharFullNameToShortName)]
 
 export const allCharOptions = [
-    ...CharOptionsWithNone.map(key =>({
-            key:key,
-            value: key,
-            display: key   
-        }))
-    ]
+    ...CharOptionsWithNone.map(key => ({
+        key: key,
+        value: key,
+        display: key,
+    }))
+]
 // Validators
-const isInt:GenericValidator            = (num:unknown) => Number.isInteger(parseInt(num as string))
-const isGtEqZero:GenericValidator       = (num:unknown) => (parseInt(num as string)) >= 0 
-const isStringOrNull:GenericValidator   = ( str : unknown) =>  typeof str == 'string'
-const isNotNoneOption:GenericValidator  = (option:unknown) => option !== null
+const isInt: GenericValidator = (num: unknown) => Number.isInteger(parseInt(num as string))
+const isGtEqZero: GenericValidator = (num: unknown) => (parseInt(num as string)) >= 0
+const isStringOrNull: GenericValidator = (str: unknown) => typeof str == 'string'
+const isNotNoneOption: GenericValidator = (option: unknown) => option !== null
 
 export const ContentOptions = [
-    { key: MatchLinkTypeShortNameToFullName.VI,
-      value: MatchLinkTypeShortNameToFullName.VI,
-      display: MatchLinkTypeShortNameToFullName.VI },
-    { key: MatchLinkTypeShortNameToFullName.FC2,
-      value: MatchLinkTypeShortNameToFullName.FC2,
-      display: MatchLinkTypeShortNameToFullName.FC2 }  
-  ]
+    {
+        key: MatchLinkTypeShortNameToFullName.VI,
+        value: MatchLinkTypeShortNameToFullName.VI,
+        display: MatchLinkTypeShortNameToFullName.VI
+    },
+    {
+        key: MatchLinkTypeShortNameToFullName.FC2,
+        value: MatchLinkTypeShortNameToFullName.FC2,
+        display: MatchLinkTypeShortNameToFullName.FC2
+    }
+]
 
 export const INITIAL_FORM_STATE: FormState = {
     type: {
@@ -94,7 +99,7 @@ export const INITIAL_FORM_STATE: FormState = {
         value: -1,
         dirty: false,
         valid: false,
-        validators: [isInt , isGtEqZero],
+        validators: [isInt, isGtEqZero],
         required: true,
         validationErrors: []
     },

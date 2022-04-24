@@ -1,7 +1,6 @@
 import React from "react"
 import { FormItemOnChange, FormItemState, AllowedFormValue } from "../AddMatch.helpers"
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material'
-import { FormValidationDisplay } from "./FormValidationDisplay.component"
 
 interface FormToggleProps {
     onChange: (e: unknown, formItemOnChange:FormItemOnChange | null) => void,
@@ -13,16 +12,16 @@ interface FormToggleProps {
 export const FormToggle: React.FC<FormToggleProps> = ({ ...props }: FormToggleProps) => {
     const formItemState = props.formItemState
     const { options, defaultValue }  = props
-    const [contentType, setContentType] = React.useState<AllowedFormValue | null>(defaultValue);
+    const [toggleValue, setToggleValue] = React.useState<AllowedFormValue | null>(defaultValue);
 
-    const handleContentType = (
+    const handleOnChange = (
         event: React.MouseEvent<HTMLElement>,
-        newContentType: AllowedFormValue,
+        toggleValue: AllowedFormValue,
       ) => {
-        setContentType(newContentType);
+        setToggleValue(toggleValue);
         props.onChange(event, {
             name: formItemState.name,
-            value: newContentType
+            value: toggleValue
         })
       };
 
@@ -32,10 +31,10 @@ export const FormToggle: React.FC<FormToggleProps> = ({ ...props }: FormTogglePr
             flexDirection: 'row' 
         }}>
              <ToggleButtonGroup
-                value={contentType}
+                value={toggleValue}
                 exclusive
                 color="primary"
-                onChange={handleContentType}
+                onChange={handleOnChange}
             >
                 { options.map( (option) => {
                     return (
@@ -45,7 +44,6 @@ export const FormToggle: React.FC<FormToggleProps> = ({ ...props }: FormTogglePr
                     )
                 }) }
             </ToggleButtonGroup>
-            <FormValidationDisplay formItemState={formItemState}></FormValidationDisplay>
         </Box>
     )
 }

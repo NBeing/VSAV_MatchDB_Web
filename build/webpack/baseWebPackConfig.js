@@ -63,7 +63,7 @@ export function getBaseWebPackConfig(env, argv) {
 
 
     config.resolve = {
-        extensions: [".scss", ".js", ".jsx", ".tsx", ".ts"],
+        extensions: [".scss", ".js", ".jsx", ".tsx", ".ts", ".css"],
         plugins: [
             new tsConfigPathPlugin({configFile: 'tsconfig.json'}) //this is the third final piece to using tsConfig as a source of truth for path aliases, it tells webpack to use it to resolve aliases in our actual code during compilation.
         ]
@@ -74,8 +74,36 @@ export function getBaseWebPackConfig(env, argv) {
     //we need to tell webpack what to do when it's processing a type script file
     //or a scss file or an image, etc etc etc.
     config.module = {
-        rules: [
-            {
+    rules: [
+        {
+            test: /\.css$/i, //here we define a regex that will run on all ts or js files with tsx or jsx.
+            use:[
+                {
+                    //note, in production you should use a css extractor here instead but extracting css is slow so using style-loader is much faster in development
+                    loader: 'style-loader', // docs -> https://webpack.js.org/loaders/style-loader/
+                    options: {
+                        esModule: false,
+                        insert: 'head'
+                    }
+                },
+                {
+                    loader: 'css-loader', //docs -> https://www.npmjs.com/package/css-loader
+                    options: {
+                        modules: false, //disable modules, this build isn't using styled components in react
+                        esModule: false,  //disable es module syntax
+                        sourceMap: true //Enables/Disables generation of source maps
+                    }
+                },
+                {
+                    loader: 'postcss-loader', //docs -> https://github.com/webpack-contrib/postcss-loader
+                    options: {
+                        sourceMap: true
+                    }
+                },
+
+            ]
+        },
+        {
                 test: /\.(js|ts)x?$/i, //here we define a regex that will run on all ts or js files with tsx or jsx.
                 exclude: /[\\/]node_modules[\\/]/, //we tell the loader to ignore node_modules, we will split all node modules out in the vendor chunk
                 use: [

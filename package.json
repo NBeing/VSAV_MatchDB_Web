@@ -87,7 +87,9 @@
     "@babel/runtime": "^7.17.2",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.6.2",
     "@mui/material": "^5.6.2",
+    "@mui/x-date-pickers": "^5.0.0-alpha.1",
     "@popperjs/core": "^2.11.2",
     "@types/enzyme": "^3.10.11",
     "@types/jest": "^27.4.1",
@@ -110,7 +112,9 @@
     "react-jss": "^10.9.0",
     "react-router": "^6.2.1",
     "react-router-dom": "^6.2.1",
-    "react-test-renderer": "^17.0.2"
+    "react-test-renderer": "^17.0.2",
+    "react-time-picker": "^4.5.0",
+    "react-youtube": "^8.2.1"
   },
   "eslintConfig": {
     "env": {
