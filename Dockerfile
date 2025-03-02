@@ -10,10 +10,10 @@ ENV PATH /app/node_modules/.bin:$PATH
 # install app dependencies
 COPY package.json ./
 COPY yarn.lock ./
-RUN yarn install
-
 # add app
 COPY . ./
+# RUN yarn install
+RUN rm -rf node_modules/ && yarn install
 # Expose port 9000
 EXPOSE 9000
 # start app

@@ -1,73 +1,94 @@
 import React, { useEffect, } from 'react'
-
-import {createUseStyles, useTheme} from 'react-jss'
-import type { CustomTheme } from '@Theme/Theme'
-
 import MatchInfoService, {MatchListResponse} from '@MatchService/MatchInfo.service'
 import { EMPTY_MATCHLIST } from '@MatchService/MatchInfo.service'
-
 import { MatchListItemReadOnly } from '@Pages/matchlist/matchListItem/MatchListItemReadOnly'
 import IMatchData from '@MatchService/MatchData.type'
+import { Box, Button, Card } from '@mui/material'
+import { YoutubeEmbedReadOnly } from './YoutubeEmbedReadOnly'
+import { SearchBar } from './SearchBar/SearchBar'
 
-type RuleNames = 
-  'nextPage'      |
-  'listing'       |
-  'description'   |
-  'title'         |
-  'listingContainer'
+// interface MatchListProps {}
 
-const useStyles = createUseStyles<RuleNames, MatchListProps, CustomTheme>({
-  title: ({
-    // background: 'black'
-  }),
-  listing:  {},
-  description: {},
-  nextPage: {},
-  listingContainer: {}
-})
-
-interface MatchListProps {}
-
-export const MatchList:React.FC = ({...props}: MatchListProps) => {
-  const theme:CustomTheme = useTheme<CustomTheme>()
-  const classes = useStyles({...props, theme})
+export const MatchList:React.FC = () => {
 
     const [listData, setListData] = React.useState<MatchListResponse>(EMPTY_MATCHLIST)
     const [page, setPage] = React.useState<number>(1)
-    
+    const [hasNextPage, setHasNextPage] = React.useState<boolean>(false)    
+    const [hasPreviousPage, setHasPreviousPage] = React.useState<boolean>(false)
+    const [currentYoutubeVideo, setCurrentYoutubePlaying] = React.useState({ url: '', timestamp: 0 })
+
     useEffect(() => {
         const fetchData = async() => await MatchInfoService.getPage(page).then(
-          res => setListData(res)
+          res => {
+            setListData(res)
+            setHasNextPage(!!res.next)
+            setHasPreviousPage(!!res.previous)
+          }
         )
         fetchData()
           .catch()
     }, [page])
     
-    function nextPage(event: React.MouseEvent) {
+    const nextPage = (event: React.MouseEvent) => {
         event.preventDefault()
-        setPage(page + 1)
+        if(hasNextPage){
+          setPage(page + 1)
+        }
       }
+    const previousPage = (event: React.MouseEvent) => {
+        event.preventDefault()
+        if(hasPreviousPage){
+          setPage(page - 1)
+        }
+      }
+    
+    const onYoutubeSelected = ( match:IMatchData) => {
+      const {url, timestamp} = match
+      setCurrentYoutubePlaying({url, timestamp})
+    }
       
     return (
-      <div>
-        <h3 className={classes.title}> Look at the matches</h3>
-        <p className={classes.description}> Current Page {page}</p>
+      <>
+        <SearchBar></SearchBar>
+        <h3>Look at the matches</h3>
+        <p> Current Page {page}</p>
+        <Button
+          disabled={!hasPreviousPage}
+          variant="outlined"
+          data-testid="matchList-next-page" 
+          onClick={previousPage}
+        >Previous Page</Button>
 
-        <button
-          className={ classes.nextPage} 
+        <Button
+          disabled={!hasNextPage}
+          variant="outlined"
           data-testid="matchList-next-page" 
           onClick={nextPage}
-        >Next Page</button>
+        >Next Page</Button>
+      <Card sx={{ display: 'flex', flexDirection: 'row', backgroundColor: 'black', padding: "20px" }}>
+      <Box sx={{ display: 'flex', flexGrow: 1, maxWidth: "500px", padding: "20px" }}>
+
 
         {listData.results.length && <div 
           data-testid="matchList-listing"
-          className={classes.listingContainer}
         >
             { listData.results.map((match:IMatchData, key) => 
-              <MatchListItemReadOnly match={match} key={key} />)
+              <MatchListItemReadOnly 
+                match={match} 
+                key={key}
+                onYoutubeSelected={onYoutubeSelected}
+              />)
             }
         </div>
+
       }
-      </div> 
-    )
+    </Box>
+    <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 2 }}>
+        <YoutubeEmbedReadOnly 
+          url={currentYoutubeVideo.url} 
+          timestamp={currentYoutubeVideo.timestamp} />
+      </Box>
+    </Card>
+    </>
+)
   }

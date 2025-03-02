@@ -1,61 +1,47 @@
 import React, { useRef, useState } from "react"
-import { FormItemState, VideoDetails } from "../AddMatch.helpers"
+import { VideoDetails } from "@Components/pages/addmatch/AddMatch.helpers"
 import { useDebouncedEffect } from "@Common/hooks/useDebouncedEffect"
 import MatchInfoService from "@MatchService/MatchInfo.service"
 import YoutubeUtil from "@Common/util/youtube.util"
-import { VideoDetailsDisplay } from "./VideoDetails.component"
+import { VideoDetailsDisplay } from "@Components/pages/addmatch/components/VideoDetails.component"
 import YouTube from "react-youtube"
-import useInterval from "@Common/hooks/useInterval"
 
-interface YoutubeEmbedProps {
-  updateTimestamp: (timestamp: number) => void,
-  formState: Record<string, FormItemState>
+interface YoutubeEmbedReadOnlyProps {
+  url: string,
+  timestamp: number
 }
-export const YoutubeEmbed: React.FC<YoutubeEmbedProps> = ({ ...props }: YoutubeEmbedProps) => {
-  const { updateTimestamp, formState } = props
+export const YoutubeEmbedReadOnly: React.FC<YoutubeEmbedReadOnlyProps> = ({ ...props }: YoutubeEmbedReadOnlyProps) => {
+  const {  url, timestamp } = props
   const ytReference = useRef(null);
 
   const [loadingVideoDetail, setLoadingVideoDetail] = useState({ isLoading: false, isLoaded: false })
   const [videoDetails, setVideoDetails] = useState<VideoDetails>({} as VideoDetails)
 
   useDebouncedEffect(async () => {
-    const url = formState.url.value as string
     if (url && YoutubeUtil.isYoutube(url)) {
       setLoadingVideoDetail((state) => ({ ...state, isLoading: true }))
       const { uploader, date_uploaded, video_title } = await MatchInfoService.ytDetails(url)
+      const result = await MatchInfoService.getByUrl(url)
+      console.log("Result", result)
       setVideoDetails((state) => {
         return {
           ...state,
           uploader: uploader,
           dateUploaded: date_uploaded,
           videoTitle: video_title,
-          youtubeId: YoutubeUtil.getYoutubeID(formState.url.value as string)
+          youtubeId: YoutubeUtil.getYoutubeID(url as string)
         }
       })
       setLoadingVideoDetail((state) => ({ ...state, isLoaded: true }))
     }
-  }, [formState.url], 2000)
+  }, [url, timestamp], 2000)
 
-  const ytOnPause = () => {
-    console.log("on pause")
-  }
-  const [runInterval, setRunInterval] = useState(false)
-  useInterval(
-    () => {
-      if (ytReference.current !== null) {
-        updateTimestamp(Math.floor(ytReference.current.getCurrentTime()))
-      }
-    },
-    // Delay in milliseconds or null to stop it
-    runInterval ? 500 : null
-  )
   const ytOnReady = (event) => {
     console.log("on ready Event", event.target)
     // Update reference value:
     ytReference.current = event.target;
-    setRunInterval(true)
+    event.target.seekTo(timestamp)
   }
-
   return (
     <>
       {loadingVideoDetail.isLoaded &&
@@ -72,7 +58,7 @@ export const YoutubeEmbed: React.FC<YoutubeEmbedProps> = ({ ...props }: YoutubeE
             opts={{width: "100%", height: "1000px", playerVars: {autoPlay: 1}}}                        // defaults -> {}
             onReady={ytOnReady}                    // defaults -> noop
             // onPlay={func}                     // defaults -> noop
-            onPause={ytOnPause}                    // defaults -> noop
+            // onPause={ytOnPause}                    // defaults -> noop
           // onEnd={func}                      // defaults -> noop
           // onError={func}                    // defaults -> noop
           // onStateChange={func}              // defaults -> noop

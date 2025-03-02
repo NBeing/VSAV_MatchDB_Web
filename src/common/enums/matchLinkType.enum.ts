@@ -9,13 +9,13 @@ export const MatchLinkTypeEnumDisplay: { [index: string]: string } = {
 }
 
 export const MatchLinkTypeShortNameToFullName:Record<string, string> = {
-    ["VI"]  : "Youtube Video",
+    ["VI"]  : "Youtube",
     ["FC2"] : "Fightcade 2",
   }
   export type MatchLinkTypeShortName = keyof typeof MatchLinkTypeShortNameToFullName
   export type MatchLinkTypeFullName = keyof typeof MatchLinkTypeFullNameToShortName
   
   export const MatchLinkTypeFullNameToShortName:Record<string, string> = {
-    ["Youtube Video"] : "VI",
+    ["Youtube"] : "VI",
     ["Fightcade 2"]   : "FC2",
   }

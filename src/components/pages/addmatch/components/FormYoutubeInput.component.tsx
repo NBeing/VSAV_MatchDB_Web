@@ -40,29 +40,6 @@ export const FormYoutubeInput: React.FC<FormYoutubeInputProps> = ({ ...props }: 
             </Icon>
           </InputAdornment>
         )}></FormTextInput>
-      {/* {loadingVideoDetail.isLoaded &&
-        <>
-          <VideoDetailsDisplay details={videoDetails} />
-          <YouTube
-            videoId={videoDetails.youtubeId}                  // defaults -> ''
-            // id={string}                       // defaults -> ''
-            // className={string}                // defaults -> ''
-            // containerClassName={string}       // defaults -> ''
-            // containerStyle={object}           // defaults -> {}
-            // title={string}                    // defaults -> ''
-            // loading={string}                  // defaults -> undefined
-            // opts={obj}                        // defaults -> {}
-            onReady={ytOnReady}                    // defaults -> noop
-            // onPlay={func}                     // defaults -> noop
-            onPause={ytOnPause}                    // defaults -> noop
-          // onEnd={func}                      // defaults -> noop
-          // onError={func}                    // defaults -> noop
-          // onStateChange={func}              // defaults -> noop
-          // onPlaybackRateChange={func}       // defaults -> noop
-          // onPlaybackQualityChange={func}    // defaults -> noop
-          />
-        </>
-      } */}
     </>
   )
 }
