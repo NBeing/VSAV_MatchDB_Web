@@ -31,10 +31,12 @@ export const FormToggle: React.FC<FormToggleProps> = ({ ...props }: FormTogglePr
             flexDirection: 'row' 
         }}>
              <ToggleButtonGroup
+                fullWidth
                 value={toggleValue}
                 exclusive
                 color="primary"
                 onChange={handleOnChange}
+                style={{marginBottom: "40px"}}
             >
                 { options.map( (option) => {
                     return (

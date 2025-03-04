@@ -1,118 +1,96 @@
 import React from 'react'
-import { CharNamesEnumDisplay } from '@Common/enums/charNames.enum';
-import { MatchLinkTypeEnumDisplay } from '@Common/enums/matchLinkType.enum';
-import {createUseStyles, useTheme} from 'react-jss'
-import  type {CustomTheme} from '@Theme/Theme'
+import { CharNamesEnumDisplay, CharShortNameToPortrait } from '@Common/enums/charNames.enum'
 import IMatchData from '@MatchService/MatchData.type'
-
-type RuleNames = 
-  'title'         |
-  'link'          |
-  'p1_char'       |
-  'p2_char'       |
-  'p1_name'       |
-  'p2_name'       |
-  'winning_char'  |
-  // YT Data 
-  'video_title'   |
-  'timestamp'     |
-  'uploader'      |
-  'date_uploaded'
+import { Box, Button, Card, List, ListItem, Tooltip } from '@mui/material'
+import YouTubeIcon from '@mui/icons-material/YouTube'
+import VersusIcon from "@Root/assets/images/versus.png"
 
 interface MatchListItemReadOnlyProps {
   match: IMatchData,
-  key: number
+  key: number,
+  onYoutubeSelected: (match: IMatchData) => void
 }
-const useStyles = createUseStyles<RuleNames, MatchListItemReadOnlyProps, CustomTheme>({
-  title: ({
-    // background: 'black'
-  }),
-  link:  {},
-  p1_char: {},
-  p2_char: {},
-  p1_name: {},
-  p2_name: {},
-  winning_char: {},
-  // YT Data  
-  video_title: {},
-  timestamp: {},
-  uploader: {},
-  date_uploaded: {},
-})
 
 export function MatchListItemReadOnly(
-  {...props} : MatchListItemReadOnlyProps
-){
-  const { match, key } = props
-  const theme:CustomTheme = useTheme<CustomTheme>()
-  const classes = useStyles({...props, theme})
-
+  { ...props }: MatchListItemReadOnlyProps
+) {
+  const { match, onYoutubeSelected } = props
+  const onClickYoutube = () => {
+    onYoutubeSelected(match)
+    console.log("on click youtube")
+  }
   return (
-    <ul key={key}>
-      <li 
-        className={classes.title}
-        data-testid="MatchListItemReadOnly-title"
-      >
-        Type: {MatchLinkTypeEnumDisplay[match.type]}
-      </li>
-      <li 
-        className={classes.link}
-        data-testid="MatchListItemReadOnly-link"
-      >
-        Link: {match.url}
-      </li>
-      <li
-        className={classes.p1_char}
-        data-testid="MatchListItemReadOnly-p1_char"
-      >
-        Player 1: {CharNamesEnumDisplay[match.p1_char]}
-      </li>
-      <li
-        className={classes.p2_char}
-        data-testid="MatchListItemReadOnly-p2_char"
-      >
-        Player 2: {CharNamesEnumDisplay[match.p2_char]}
-      </li>
-      <li
-        className={ classes.winning_char}
-        data-testid="MatchListItemReadOnly-winning_char"
-      >
-        Winning Character: {match.winning_char}
-      </li>
-      <li
-        className={ classes.p1_name}
-        data-testid="MatchListItemReadOnly-p1_name"
-      >
-        Player 1 Name: {match.p1_name}
-      </li>
-      <li 
-        className={ classes.p2_name}
-        data-testid="MatchListItemReadOnly-p2_name"
-      >
-        Player 2 Name: {match.p2_name}
-      </li>
-      <li 
-        className={ classes.timestamp}
-        data-testid="MatchListItemReadOnly-timestamp"
-      > Timestamp: {match.timestamp}</li>
-      <li
-        className={ classes.date_uploaded}
-        data-testid="MatchListItemReadOnly-date_uploaded"
-      >
-        Date Uploaded: {match.date_uploaded}
-      </li>
-      <li
-        className={ classes.video_title}
-        data-testid="MatchListItemReadOnly-video_title"
-      >
-        Video Title: {match.video_title}
-      </li>
-      <li
-        className={ classes.uploader}
-        data-testid="MatchListItemReadOnly-uploader"
-      >
-        Uploaded By: {match.uploader}
-      </li>
-    </ul>
+    
+    <Card
+      sx={{
+        maxWidth: "700px",
+        margin: "1em",
+        padding: "1em"
+      }}>
+      <List>
+
+        <ListItem style={{justifyContent: 'space-around'}}>
+          <Box style={{ alignSelf: 'flex-start' }}>
+            <Tooltip title={
+              CharNamesEnumDisplay[match.p1_char] !== '' && 
+              (<p style={{ width: "fit-content", margin: "auto"}}> 
+                  {CharNamesEnumDisplay[match.p1_char]}
+                </p>)
+              }>
+              <img src={CharShortNameToPortrait[match.p1_char]}  />
+            </Tooltip>
+          </Box>
+          <Box>
+            <img src={VersusIcon} />
+          </Box>
+          <Box style={{ alignSelf: 'flex-end', alignItems:"center", justifyContent:"center" }}>
+          <Tooltip title={
+              CharNamesEnumDisplay[match.p2_char] !== '' && 
+              (<p style={{ width: "fit-content", margin: "auto"}}> 
+                  {CharNamesEnumDisplay[match.p2_char]}
+                </p>)
+              }>
+             <img 
+              src={CharShortNameToPortrait[match.p2_char]} 
+              style={{
+                // ["-webkit-transform"]: "scaleX(-1)",
+                transform: "scaleX(-1)",
+              }}
+             />
+            </Tooltip>
+          </Box>
+
+        </ListItem>
+        <div>
+          {match.video_title && (
+          <p style={{ width: "fit-content", margin: "auto"}}>
+            Title: {match.video_title}
+          </p>)}
+          {match.uploader && (
+            <p style={{ width: "fit-content", margin: "auto"}}>
+              Channel: {match.uploader}
+            </p>)}
+
+          {match.date_uploaded && 
+          (<p style={{ width: "fit-content", margin: "auto"}}>
+            Uploaded To YT On: {match.date_uploaded.split(" ")[0]}
+          </p>)}
+        </div>
+
+
+        <ListItem>
+          <Tooltip title={`${match.url}`}>
+          <Button 
+          fullWidth
+            variant="outlined"
+            onClick={onClickYoutube}
+          >
+              <YouTubeIcon style={{ fontSize: "4em"}}/><span>Open in Viewer</span>
+          </Button>
+          </Tooltip>
+        </ListItem>
+
+      </List>
+    </Card>
   )
 }
