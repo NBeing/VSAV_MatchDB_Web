@@ -10,7 +10,7 @@ interface FormTextInputProps {
         formItemOnChange:FormItemOnChange
     ) => void,
     formItemState: FormItemState,
-    startAdornment: ReactNode
+    startAdornment?: ReactNode
 }
 
 export const FormTextInput: React.FC<FormTextInputProps> = ({ ...props }: FormTextInputProps) => {
@@ -32,7 +32,6 @@ export const FormTextInput: React.FC<FormTextInputProps> = ({ ...props }: FormTe
         <Box sx={{
             display: 'flex',
             flexDirection: 'row',
-            margin: '10px'
         }}>
 
             <TextField

@@ -35,6 +35,15 @@ interface IMatchInfoService {
   ytDetails : (url:string) => Promise<IVideoDetail>
 }
 
+export type RetrievalFuncType = (config:MatchInfoServiceConfig) => Promise<IMatchData>
+
+export type MatchInfoServiceConfig = {
+  p1_char? : string,
+  p2_char? : string,
+  winning_char?: string, 
+  page?    : number
+}
+
 class MatchInfoService implements IMatchInfoService {
   
   async ytDetails(url:string): Promise<IVideoDetail> {
@@ -61,6 +70,34 @@ class MatchInfoService implements IMatchInfoService {
   async getById(id:string): Promise<IMatchData> {
     try {
       const endpoint = `${BASE_URL}${id}`
+      const { data } = await api.get<IMatchData>(endpoint);
+      return data
+    } catch (e) {
+      throw new Error(JSON.stringify(e))
+    }
+  }
+  async getByMatchup(config:MatchInfoServiceConfig):Promise<IMatchData> {
+    try {
+      const { p1_char , p2_char , page } = config
+      const endpoint = `${BASE_URL}get-matchup/?char1=${p1_char}&char2=${p2_char}${page ? `page=${page}` : ''}`
+      const { data } = await api.get<IMatchData>(endpoint);
+      return data
+    } catch (e) {
+      throw new Error(JSON.stringify(e))
+    }
+  }
+  async getByCharacter(char: string):Promise<IMatchData> {
+    try {
+      const endpoint = `${BASE_URL}by-character/?char=${char}`
+      const { data } = await api.get<IMatchData>(endpoint);
+      return data
+    } catch (e) {
+      throw new Error(JSON.stringify(e))
+    }
+  }
+  async getByUrl(url:string): Promise<IMatchData> {
+    try {
+      const endpoint = `${BASE_URL}by-url/?url=${url}`
       const { data } = await api.get<IMatchData>(endpoint);
       return data
     } catch (e) {

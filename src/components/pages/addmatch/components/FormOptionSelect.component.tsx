@@ -26,7 +26,6 @@ export const FormOptionSelect: React.FC<FormOptionSelectProps> = ({ ...props }: 
         <Box sx={{
             display: 'flex',
             flexDirection: 'row',
-            margin: '10px',
             marginBottom: '40px'
         }}>
             <Autocomplete
